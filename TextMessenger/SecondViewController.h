@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Social/Social.h>
 
 @interface SecondViewController : UIViewController
+- (IBAction)postToTweeter:(id)sender;
+- (IBAction)postToFacebook:(id)sender;
 
 @end

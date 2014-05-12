@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C1021" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="SystemCode" representedClassName="SystemCode" syncable="YES">
+        <attribute name="codeDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="codeId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="codeText" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isdeleted" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="sortOption" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Templates" representedClassName="Templates" syncable="YES">
+        <attribute name="backGroundImage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="createdBy" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dateCreated" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="dateModified" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="modifiedBy" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="templateContent" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="templateId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="templateTitle" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="userProfile" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserProfile" inverseName="template" inverseEntity="UserProfile" syncable="YES"/>
+    </entity>
+    <entity name="UserMessages" representedClassName="UserMessages" syncable="YES">
+        <attribute name="deletedBy" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="deletedDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="isdeleted" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="messageContent" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="messageDateCreated" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="messageGuid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="messageStatusCode" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="modifiedBy" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="recipientName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="recipientNumber" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="sendDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="senderEmail" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="senderNumber" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="templateId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="userGuid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="userProfile" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserProfile" inverseName="messages" inverseEntity="UserProfile" syncable="YES"/>
+    </entity>
+    <entity name="UserProfile" representedClassName="UserProfile" syncable="YES">
+        <attribute name="activationCode" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="createdBy" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dateActivated" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="dateCreated" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="dateModified" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="isActivated" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="lastOnlineDateTime" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="modifiedBy" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="userCurrentStatus" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="userEmailAddress" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userGuid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userPhoneNumber" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UserMessages" inverseName="userProfile" inverseEntity="UserMessages" syncable="YES"/>
+        <relationship name="template" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Templates" inverseName="userProfile" inverseEntity="Templates" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="SystemCode" positionX="-432" positionY="-244" width="128" height="118"/>
+        <element name="Templates" positionX="-234" positionY="54" width="135" height="178"/>
+        <element name="UserMessages" positionX="-234" positionY="-243" width="128" height="285"/>
+        <element name="UserProfile" positionX="-432" positionY="-82" width="128" height="253"/>
+    </elements>
+</model>
