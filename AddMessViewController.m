@@ -228,21 +228,21 @@
     */
     // ********
 }
-/*
-#pragma textViewMsgContent Management
--(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    NSLog(@"%@", textView );
+    
 }
-*/
+
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    NSLog(@"%@",_personRecipient);
+}
 
 - (void)textViewText:(NSNotification *)notification
 {
     
 }
-
-
-
 
 - (void) passDateString:(selectDateViewController *)controller didPassDateString:(NSString *)item
 {
@@ -668,14 +668,14 @@
         
         NSString *number = _phoneTempVar;
         
-        //NSString *msgTemp = [NSString stringWithFormat:@"%@", _textViewMsgContent.text];
+        NSString *msgTemp = [NSString stringWithFormat:@"%@", _textViewMsgContent.text];
         NSTimeZone *timeZone = [NSTimeZone defaultTimeZone];
                 
         // Manipulate Phone Number and convert all to NUMBERS
         NSString *strippedNumber = [number stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [number length])];
         
 
-        //[myMO setValue:msg forKey:@"messageContent"];
+        [myMO setValue:msgTemp forKey:@"messageContent"];
         
         
         [myMO setValue:[NSNumber numberWithInteger:[strippedNumber integerValue]] forKey:@"recipientNumber"];
