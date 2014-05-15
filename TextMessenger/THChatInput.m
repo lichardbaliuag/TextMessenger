@@ -215,8 +215,8 @@
     
     [UIView animateWithDuration:(animated ? .1f : 0) animations:^
      {
-         int h = h2 == h1 ? _inputHeightWithShadow : h2 + 38;   //24
-         int delta = h - self.frame.size.height;
+         NSInteger h = h2 == h1 ? _inputHeightWithShadow : h2 + 38;   //24
+         NSInteger delta = h - self.frame.size.height;
          CGRect r2 = CGRectMake(0, self.frame.origin.y - delta, self.frame.size.width, h);
          self.frame = r2;
          //CGRectMake(0, self.frame.origin.y - delta, self.superview.frame.size.width, h);

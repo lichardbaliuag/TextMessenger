@@ -228,15 +228,21 @@
     */
     // ********
 }
-
+/*
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     
 }
+*/
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
     NSLog(@"%@",_personRecipient);
+}
+
+- (void)textViewDidChange:(UITextView *)textInput
+{
+    NSLog(@"Did change: %@",_personRecipient);
 }
 
 - (void)textViewText:(NSNotification *)notification
@@ -373,8 +379,8 @@
     //ABMutableMultiValueRef emails = ABRecordCopyValue(person, kABPersonEmailProperty);
     //NSString *addresses = (__bridge_transfer NSString *)ABMultiValueCopyArrayOfAllValues(emails);
     
-    //if (phoneProperty)
-    //{
+    if (phoneProperty)
+    {
         CFRelease(phoneProperty);                                                   // Release phone properly
         if (![_personRecipient.text isEqualToString:nil])                           // Check if NOT empty
         {
@@ -399,8 +405,6 @@
             [self dismissViewControllerAnimated:YES completion:nil];                // Dismiss View Controller
              NSLog(@"First: %@ %@ ", name, phone);
             //[self getDate:self];                                                  // Call getDate function
-        
-            
         }
         else
         //if (![_personRecipient.text isEqualToString:nil])                         // Check if empty
@@ -416,14 +420,9 @@
         //_personRecipient.text = [NSString stringWithFormat:@"%@, ", name];        // Passing Name- recipient field
         //[self dismissViewControllerAnimated:YES completion:nil];                  // Dismiss View Controller
         //[self getDate:self];                                                      // Call getDate function
-    //}
-        //CFRelease(phoneProperty);
-        //CFRelease(phone);
-    //[phone release];
-    //[name release];
+    }
     return name;
     return phone;
-    
 }
 
 - (void) insertString:(NSString *) insertingString intoTextView:(UITextView *) textView
@@ -437,20 +436,6 @@
     _personRecipient.selectedRange = range;
     _personRecipient.scrollEnabled = YES;  // turn scrolling back on.
 }
-
-/*
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    UITextPosition *beginning = _personRecipient.beginningOfDocument;
-    UITextPosition *start = [_personRecipient positionFromPosition:beginning offset:range.location];
-    UITextPosition *end = [_personRecipient positionFromPosition:start offset:range.length];
-    UITextRange *textRange = [_personRecipient textRangeFromPosition:start toPosition:end];
-    
-    //NSInteger cursorOffset = [_personRecipient offsetFromPosition:beginning toPosition:end];
-    [_personRecipient replaceRange:textRange withText:string];
-    _personRecipient.text = [NSString stringWithFormat:@"name"];
-}
-*/
 
 #pragma mark Date Picker
 
@@ -665,18 +650,16 @@
         // This created pointer to the NSManageObject then use the pointer to populate the attributes.
         NSManagedObject *myMO = [NSEntityDescription insertNewObjectForEntityForName:@"UserMessages"
                                  inManagedObjectContext:context];
-        
         NSString *number = _phoneTempVar;
         
-        NSString *msgTemp = [NSString stringWithFormat:@"%@", _textViewMsgContent.text];
-        NSTimeZone *timeZone = [NSTimeZone defaultTimeZone];
-                
-        // Manipulate Phone Number and convert all to NUMBERS
-        NSString *strippedNumber = [number stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [number length])];
+        
+        THChatInput *stringmsg = [[THChatInput alloc]init];
+        [myMO setValue:_chatInput.textView.text forKey:@"messageContent"];
+        
         
 
-        [myMO setValue:msgTemp forKey:@"messageContent"];
-        
+        // Manipulate Phone Number and convert all to NUMBERS
+        NSString *strippedNumber = [number stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [number length])];
         
         [myMO setValue:[NSNumber numberWithInteger:[strippedNumber integerValue]] forKey:@"recipientNumber"];
         [myMO setValue:_personRecipient.text forKey:@"recipientName"];
@@ -692,7 +675,7 @@
         NSLog(@"Msg content: %@", _textViewMsgContent.text);
         NSLog(@"Chat textview: %@", _chatInput.textView.text);
 
-        NSLog(@"Time Zone: %@", timeZone);
+        NSLog(@"Time Zone: %@", [NSTimeZone defaultTimeZone]);
     }
     
     NSError *error = nil;
@@ -709,8 +692,8 @@
 #pragma The RETURNKEY Button
 - (void)returnButtonPressed:(id)sender
 {
-
     _textViewMsgContent.text = [sender text];
+    
     //_chatInput.textView.text = @" ";
     [_chatInput fitText];
     
@@ -738,7 +721,7 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    
+    NSLog(@"viewWillAppear");
 }
 
 @end
