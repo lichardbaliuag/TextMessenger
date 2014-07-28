@@ -9,12 +9,15 @@
 
 @implementation THChatInput
 
+
+
+
 //@synthesize textView = _textView;
 
 - (void) composeView {
    
    CGSize size = self.frame.size;
-   
+    
    // Input
 	_inputBackgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
 	_inputBackgroundView.autoresizingMask = UIViewAutoresizingNone;
@@ -29,8 +32,7 @@
 	// -- TextView -- //
     //_textView = [[UITextView alloc] initWithFrame:CGRectMake(70.0f, 0, 185, 0)];
     _textView = [[UITextView alloc] initWithFrame:CGRectMake(50.0f, 0, 200, 30)];        // 20.0f, 0, 185, 0 (X, Y, W, H)
-
-    _textView.text = @"aaaaabbbbb";
+    //_textView.text = @"aaaaabbbbb";
     
     //To make the border look very close to a UITextField
     [_textView.layer setBorderColor:[[[UIColor grayColor] colorWithAlphaComponent:0.5] CGColor]];
@@ -103,6 +105,7 @@
 */
     
    [self sendSubviewToBack:_inputBackgroundView];
+    
 }
 
 #pragma mark UITextViewDelegate Delegate
@@ -241,6 +244,7 @@
     
     //[_textView becomeFirstResponder];               // Test if it becomes first responder
     
+    NSLog(@"awakeFromNib - THChatInput");
     [self composeView];
 }
 

@@ -29,8 +29,8 @@
 @synthesize personRecipient = _personRecipient, sendDate = _sendDate;   // Recepient & Date to send message
 
 //@synthesize personRecipientString, contactNumberString;
-@synthesize keyboardToolbar, nextPreviousControl;                       // Keyboard control
-@synthesize nameField = _nameField, mainDummyController;
+//@synthesize keyboardToolbar, nextPreviousControl;                       // Keyboard control
+//@synthesize nameField = _nameField, mainDummyController;
 
 - (void)viewDidLoad
 {
@@ -68,7 +68,7 @@
     [toLabel1 setFrame:CGRectMake(22, 90, 26, 21)];
     [self.view addSubview:toLabel1];
     [toLabel1 setText:@"To:"];
-    [toLabel1 release];
+    //[toLabel1 release];
     
     // Customize UIButton for Date Picker
     //UIButton *dateButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -126,7 +126,7 @@
 - (BOOL)tokenFieldShouldReturn:(JSTokenField *)tokenField {
     NSMutableString *recipient = [NSMutableString string];
 	
-	NSMutableCharacterSet *charSet = [[[NSCharacterSet whitespaceCharacterSet] mutableCopy] autorelease];
+	NSMutableCharacterSet *charSet = [[NSCharacterSet whitespaceCharacterSet] mutableCopy];
 	[charSet formUnionWithCharacterSet:[NSCharacterSet punctuationCharacterSet]];
 	
     NSString *rawStr = [[tokenField textField] text];
@@ -160,8 +160,8 @@
 - (void)viewDidUnload
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[_personRecipient release], _personRecipient = nil;
-	[_toField release], _toField = nil;
+	//[_personRecipient release], _personRecipient = nil;
+	//[_toField release], _toField = nil;
 	[super viewDidUnload];
 }
 
@@ -210,11 +210,11 @@
                               identifier:(ABMultiValueIdentifier)identifier
 {
 	ABMultiValueRef phoneProperty = ABRecordCopyValue(person,property);
-	//NSString *phone = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(phoneProperty,identifier);
-    NSString *phone = (NSString *)ABMultiValueCopyValueAtIndex(phoneProperty, identifier);
+	NSString *phone = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(phoneProperty,identifier);
+    //NSString *phone = (NSString *)ABMultiValueCopyValueAtIndex(phoneProperty, identifier);
     
+    NSString *name = (__bridge NSString *)ABRecordCopyCompositeName(person);
     //NSString *name = (__bridge NSString *)ABRecordCopyCompositeName(person);
-    NSString *name = (NSString *)ABRecordCopyCompositeName(person);
     
     //ABMutableMultiValueRef emails = ABRecordCopyValue(person, kABPersonEmailProperty);
     //NSString *addresses = (__bridge_transfer NSString *)ABMultiValueCopyArrayOfAllValues(emails);
@@ -321,7 +321,7 @@
     if (buttonIndex != [actionSheet cancelButtonIndex])
     {
         // set Date formatter
-        NSDateFormatter *formatter = [[[NSDateFormatter alloc] init]autorelease];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         //[formatter setDateFormat:@"MMMM-dd-YYYY h:mm a"];
         [formatter setDateFormat:@"dd-MMM-YYYY h:mm a"];
         
@@ -567,10 +567,10 @@
 - (void)dealloc {
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-	[_personRecipient release], _personRecipient = nil;
-	[_toField release], _toField = nil;
+	//[_personRecipient release], _personRecipient = nil;
+	//[_toField release], _toField = nil;
 
-    [super dealloc];
+    //[super dealloc];
 }
 
 @end

@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "ControlViewController.h"
 
+#define kDatePickerTag 100
+
 @class selectDateViewController;
 
 @protocol sdViewControllerDelegate <NSObject>

@@ -8,12 +8,12 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "AddMessViewController.h"
-//#import "MainController.h"
-//#import "JSTokenField.h"
+#import "MainController.h"
+#import "JSTokenField.h"
 //#import "THChatInput.h"
-//#import "UserMessages.h"
+#import "UserMessages.h"
 //#import "AppDelegate.h"
-//#import "selectDateViewController.h"
+#import "selectDateViewController.h"
 
 #define msgCodeOne 1
 #define kDatePickerTag 100
@@ -190,15 +190,6 @@
     [self.view addSubview:_textViewMsgContent];
 
     
-    // -- To handle keypress from recepient field -- //
-    /*
-    [NSNotificationCenter addObserver:self
-                             selector:@selector(textViewText:)
-                                 name:UITextViewTextDidChangeNotification
-                               object:textViewMsgContent];
-     */
-    
-    
     // HANDLE TOKEN FIELD
     // *******
     /*
@@ -214,6 +205,7 @@
     //[_chatInput.sendButton setBackgroundImage:[UIImage imageNamed:@"Chat_Send_Button_Pressed.png"] forState:UIControlStateHighlighted];
     //[_chatInput.sendButton setBackgroundImage:[UIImage imageNamed:@"Chat_Send_Button_Pressed.png"] forState:UIControlStateSelected];
     
+    
       _chatInput.backgroundColor = [UIColor clearColor];
       //_chatInput.inputBackgroundView.image = [[UIImage imageNamed:@"Chat_Footer_BG.png"] stretchableImageWithLeftCapWidth:80 topCapHeight:25];
       _chatInput.inputBackgroundView.image = [[UIImage imageNamed:@"Chat_Footer_BG.png"] stretchableImageWithLeftCapWidth:80 topCapHeight:25];
@@ -228,34 +220,11 @@
     */
     // ********
 }
-/*
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-{
-    
-}
-*/
-
-- (void)textViewDidBeginEditing:(UITextView *)textView
-{
-    NSLog(@"%@",_personRecipient);
-}
-
-- (void)textViewDidChange:(UITextView *)textInput
-{
-    NSLog(@"Did change: %@",_personRecipient);
-}
-
-- (void)textViewText:(NSNotification *)notification
-{
-    
-}
 
 - (void) passDateString:(selectDateViewController *)controller didPassDateString:(NSString *)item
 {
     self.sendDate.titleLabel.text = item;
 }
-
-
 
 #pragma mark - NSManageObjectContext
 
@@ -329,7 +298,7 @@
 
 - (void) keyboardWillAnimate:(NSNotification*) notification
 {
-	NSLog(@"%@", notification);
+	//NSLog(@"%@", notification);
 }
 
 #pragma mark Launch Contact List
@@ -368,19 +337,19 @@
                               identifier:(ABMultiValueIdentifier)identifier
 {
 	ABMultiValueRef phoneProperty = ABRecordCopyValue(person,property);
-	NSString *phone = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(phoneProperty,identifier);
-    //NSString *phone = (NSString *)ABMultiValueCopyValueAtIndex(phoneProperty, identifier);
+	//NSString *phone = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(phoneProperty,identifier);
+    NSString *phone = (__bridge NSString *)ABMultiValueCopyValueAtIndex(phoneProperty, identifier);
     
     _phoneTempVar = phone;
     
+    //NSString *name = (__bridge NSString *)ABRecordCopyCompositeName(person);
     NSString *name = (__bridge NSString *)ABRecordCopyCompositeName(person);
-    //NSString *name = (NSString *)ABRecordCopyCompositeName(person);
     
     //ABMutableMultiValueRef emails = ABRecordCopyValue(person, kABPersonEmailProperty);
     //NSString *addresses = (__bridge_transfer NSString *)ABMultiValueCopyArrayOfAllValues(emails);
     
-    if (phoneProperty)
-    {
+    //if (phoneProperty)
+    //{
         CFRelease(phoneProperty);                                                   // Release phone properly
         if (![_personRecipient.text isEqualToString:nil])                           // Check if NOT empty
         {
@@ -405,6 +374,8 @@
             [self dismissViewControllerAnimated:YES completion:nil];                // Dismiss View Controller
              NSLog(@"First: %@ %@ ", name, phone);
             //[self getDate:self];                                                  // Call getDate function
+        
+            
         }
         else
         //if (![_personRecipient.text isEqualToString:nil])                         // Check if empty
@@ -420,9 +391,10 @@
         //_personRecipient.text = [NSString stringWithFormat:@"%@, ", name];        // Passing Name- recipient field
         //[self dismissViewControllerAnimated:YES completion:nil];                  // Dismiss View Controller
         //[self getDate:self];                                                      // Call getDate function
-    }
+    //}
+    //CFRelease(phoneProperty);
+    //return phone;
     return name;
-    return phone;
 }
 
 - (void) insertString:(NSString *) insertingString intoTextView:(UITextView *) textView
@@ -436,6 +408,20 @@
     _personRecipient.selectedRange = range;
     _personRecipient.scrollEnabled = YES;  // turn scrolling back on.
 }
+
+/*
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    UITextPosition *beginning = _personRecipient.beginningOfDocument;
+    UITextPosition *start = [_personRecipient positionFromPosition:beginning offset:range.location];
+    UITextPosition *end = [_personRecipient positionFromPosition:start offset:range.length];
+    UITextRange *textRange = [_personRecipient textRangeFromPosition:start toPosition:end];
+    
+    //NSInteger cursorOffset = [_personRecipient offsetFromPosition:beginning toPosition:end];
+    [_personRecipient replaceRange:textRange withText:string];
+    _personRecipient.text = [NSString stringWithFormat:@"name"];
+}
+*/
 
 #pragma mark Date Picker
 
@@ -632,9 +618,7 @@
 {
     // ************** SAMPLE **************** //
     
-    //NSString *msg = [NSString stringWithFormat:@"%@", ];
-    
-    
+    NSString *msg = [NSString stringWithFormat:@"%@", _chatInput.textView.text ];
     
     NSManagedObjectContext *context = [self manageObjectContext];
     // Create new Managed Object
@@ -643,23 +627,31 @@
         // Update message using self.message which declared as ManageObject.
         [self.message setValue:self.personRecipient.text forKey:@"recipientName"];
         [self.message setValue:self.textViewMsgContent.text forKey:@"messageContent"];
-        NSLog(@"New: %@", textViewMsgContent.text);
+        NSLog(@"New: %@", _textViewMsgContent.text);
         
     } else
     {
         // This created pointer to the NSManageObject then use the pointer to populate the attributes.
         NSManagedObject *myMO = [NSEntityDescription insertNewObjectForEntityForName:@"UserMessages"
                                  inManagedObjectContext:context];
+        
         NSString *number = _phoneTempVar;
         
-        
-        THChatInput *stringmsg = [[THChatInput alloc]init];
-        [myMO setValue:_chatInput.textView.text forKey:@"messageContent"];
-        
-        
-
+        //NSString *msgTemp = [NSString stringWithFormat:@"%@", _textViewMsgContent.text];
+        NSTimeZone *timeZone = [NSTimeZone defaultTimeZone];
+                
         // Manipulate Phone Number and convert all to NUMBERS
         NSString *strippedNumber = [number stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [number length])];
+        
+        if ([self.isFromTemplate isEqual: @"1"]) {
+            [myMO setValue:self.templateContent forKey:@"messageContent"];
+        }
+        else
+        {
+            [myMO setValue:msg forKey:@"messageContent"];
+
+        }
+        
         
         [myMO setValue:[NSNumber numberWithInteger:[strippedNumber integerValue]] forKey:@"recipientNumber"];
         [myMO setValue:_personRecipient.text forKey:@"recipientName"];
@@ -674,13 +666,12 @@
         NSLog(@"Name: %@", _personRecipient.text);
         NSLog(@"Msg content: %@", _textViewMsgContent.text);
         NSLog(@"Chat textview: %@", _chatInput.textView.text);
-
-        NSLog(@"Time Zone: %@", [NSTimeZone defaultTimeZone]);
+        NSLog(@"Time Zone: %@", timeZone);
     }
     
     NSError *error = nil;
     if (![context save:&error]) {
-        NSLog(@"Unresolved error %@, %@", error, [error localizedDescription]);  // error userInfo
+        NSLog(@"Unresolved error %@, %@", error, [error localizedDescription]);         // error userInfo
         //abort();
     }
     // ************************************** //
@@ -693,16 +684,19 @@
 - (void)returnButtonPressed:(id)sender
 {
     _textViewMsgContent.text = [sender text];
-    
-    //_chatInput.textView.text = @" ";
+    _chatInput.textView.text = @" ";
     [_chatInput fitText];
     
-    [_textViewMsgContent resignFirstResponder];                    // Hide keyboard after pressing return
-    
-    [_chatInput.textView setText:@""];          //Clear textview
+    //[_textView setText:@""];          //Clear textview
     //[_textView resignFirstResponder]; // DOES NOT WORK
     //[self dismissViewControllerAnimated:YES completion:nil];
 }
+
+
+
+
+
+
 
 #pragma UITextView above UIKeyboard
 /*
@@ -721,7 +715,7 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    NSLog(@"viewWillAppear");
+    
 }
 
 @end

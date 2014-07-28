@@ -19,6 +19,13 @@
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
+@property (strong, nonatomic) NSString *isFromNotification;
+@property (nonatomic,strong) NSString *notificationID;
+@property (nonatomic, strong)NSString *test;
+
 //@property (nonatomic, strong) UserProfile *userProfile;
 @property (nonatomic, strong) UserMessages *userMessages;
+
+-(void)CallOtherView;
+
 @end

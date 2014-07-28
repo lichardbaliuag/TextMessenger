@@ -7,6 +7,8 @@
 //
 
 #import "FetchViewController.h"
+#import "AddMessViewController.h"
+
 
 #define cWR 24/255.0f
 #define cGN 177/255.0f
@@ -20,7 +22,6 @@
 
 @implementation FetchViewController
 
-@synthesize greetingId, greetingContent, txtId = _txtId;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -36,7 +37,7 @@
     [super viewDidLoad];
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:cWR green:cGN blue:cBL alpha:cAL];
 
-    // Do any additional setup after loading the view.
+    self.lblContent.text = self.templateContent;
 }
 
 - (void)didReceiveMemoryWarning
@@ -45,6 +46,7 @@
     // Dispose of any resources that can be recreated.
 }
 
+/*
 - (IBAction)fetchGreeting
 {
     //NSString *txt = @"55";
@@ -71,11 +73,9 @@
              
              self.greetingId.text = [[greeting objectForKey:@"id"] stringValue];
              self.greetingContent.text = [greeting objectForKey:@"content"];
-             
          }
     }];
 }
-/*
 - (IBAction)cancelButton:(id)sender
 {
 
@@ -99,4 +99,25 @@
 }
 */
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"SendTemplate"])
+    {
+        AddMessViewController *dv = (AddMessViewController *)segue.destinationViewController;
+        dv.templateContent = self.templateContent;
+        dv.templateID = self.templateID;
+        
+        dv.isFromTemplate = @"1";
+        
+    }
+    
+}
+
+- (IBAction)Send:(id)sender {
+    
+     //[self performSegueWithIdentifier:@"SendTemplate" sender:self];
+    UIViewController *myController = [self.storyboard instantiateViewControllerWithIdentifier:@"SendTemplate"];
+    [self.navigationController pushViewController: myController animated:YES];
+    
+}
 @end

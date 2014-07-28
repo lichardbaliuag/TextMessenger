@@ -21,14 +21,15 @@
 @property (strong, nonatomic) UIButton *emojiButton;
 
 @property (strong, nonatomic) UITextView *textView;
-
 @property (strong, nonatomic) UILabel *lblPlaceholder;
 @property (strong, nonatomic) UIImageView *inputBackgroundView;
 //@property (strong, nonatomic) NSString *strName;
 
 - (void) fitText;
 - (void) setText:(NSString*)text;
-
 - (void) stringReciever:(NSString*)msgString;       // To handle message from textview
+
+
+
 
 @end

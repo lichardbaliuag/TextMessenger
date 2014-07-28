@@ -9,7 +9,7 @@
 #import "selectDateViewController.h"
 #import "AddMessViewController.h"
 
-#define kDatePickerTag 100
+//#define kDatePickerTag 100
 
 @interface selectDateViewController ()
 
@@ -130,7 +130,6 @@
 
 - (IBAction)doneButton:(id)sender
 {
-
     AddMessViewController *amv = [self.storyboard instantiateViewControllerWithIdentifier:@"AddMessViewController"];
     //amv.sendDate.titleLabel.text = [NSString stringWithFormat:@"%@",[_formatter stringFromDate:_chosenDate]];
     [amv.sendDate setTitle:_dateString forState:UIControlEventValueChanged];
@@ -149,6 +148,7 @@
 }
 
 - (IBAction)dailyButtPressed:(id)sender {
+    
 }
 
 
@@ -158,7 +158,21 @@
 
 
 - (IBAction)monthlyButtPressed:(id)sender {
+    AddMessViewController *amv = [self.storyboard instantiateViewControllerWithIdentifier:@"AddMessViewController"];
+    //amv.sendDate.titleLabel.text = [NSString stringWithFormat:@"%@",[_formatter stringFromDate:_chosenDate]];
+    [amv.sendDate setTitle:_dateString forState:UIControlEventValueChanged];
     
+    [self.delegate passDateString:self didPassDateString:_dateString];
+    
+    if  ([_chosenDate isEqual:nil])
+    {
+        _chosenDate = [_datePicker date];
+        NSLog(@"%@",[NSString stringWithFormat:@"%@", _chosenDate]);
+    }
+    //[_formatter release];
+    
+    NSLog(@"%@",[NSString stringWithFormat:@"%@", _chosenDate]);
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 

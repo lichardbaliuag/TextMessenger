@@ -28,7 +28,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    
+    [self contentDisplay];
+    
+    self.contentLabel.text = self.msgID;
+}
+
+- (void)contentDisplay
+{
+    
 }
 
 - (void)didReceiveMemoryWarning

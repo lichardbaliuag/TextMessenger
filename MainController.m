@@ -65,6 +65,11 @@
 
 - (void)viewDidLoad
 {
+    
+    if ([self.isFromNotification isEqualToString:@"1"]) {
+        return;
+    }
+    
     [super viewDidLoad];
    
     self.fetchedResultsController = nil;
@@ -75,7 +80,6 @@
         NSLog(@"Error in viewDidLoad! %@", error);
         abort();
     }
-    
     
     //-- self.name = [[NSMutableArray alloc]init];
     //self.dateTimeSent = [[NSMutableArray alloc] init];
@@ -169,30 +173,20 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
-    // Wrong: It created managed object and saved it automatically.
-    /*
-    if ([[segue identifier]isEqualToString:@"msgCompose"])
-    {
-        UINavigationController *navigationController = [segue destinationViewController];
-        //UINavigationController *navigationController = [[segue destinationViewController] setManagedObjectContext:
-                                                        //self.managedObjectContext];
-        //UINavigationController *navigationController = [[[segue destinationViewController]viewControllers] objectAtIndex:0];
-        
-        AddMessViewController *addMessViewController = (AddMessViewController *)navigationController.topViewController;
-        
-        UserMessages *userMessages = [NSEntityDescription insertNewObjectForEntityForName:@"UserMessages" inManagedObjectContext:[self managedObjectContext]];
-        
-        addMessViewController.addMessage = userMessages;
-        NSLog(@"screen move to addMessViewController, navcon: %@ , msgcon: %@", navigationController, addMessViewController);
-    }
+        if ([segue.identifier isEqualToString:@"messageDetail"])
+        {
+            
+            MessageContentViewController *dv = segue.destinationViewController;
+            dv.msgID = self.notificationID;
+            
+            
+//            NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+//            NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+//            [[segue destinationViewController] setDetailItem:object];
 
-    
-    if ([[segue identifier] isEqualToString:@"detailMsg"]) {
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-        [[segue destinationViewController] setDetailItem:object];
-    }
-     */
+            
+            
+        }
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -342,6 +336,10 @@
     cell.textLabel.text = [[object valueForKey:@"recipientName"] description];
 }
 
+-(void)CallOtherView
+{
+    [self performSegueWithIdentifier:@"messageDetail" sender:self ];
+}
 
 
 @end

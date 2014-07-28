@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "MainController.h"
+#import "MessageContentViewController.h"
 
 @implementation AppDelegate
 
@@ -22,6 +23,11 @@
     MainController  *controller = (MainController *)[[navigationController viewControllers] objectAtIndex:0];
     controller.managedObjectContext = self.managedObjectContext;
 
+    UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+    if (localNotification) {
+        application.applicationIconBadgeNumber = 0;
+    }
+    
     return YES;
 }
 							
@@ -35,11 +41,38 @@
 {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+
+    
+    NSDate *alarmTime = [[NSDate date] dateByAddingTimeInterval:3.0];
+    //UIApplication *app = [UIApplication sharedApplication];
+    UILocalNotification *notifyAlarm = [[UILocalNotification alloc]init];
+    
+    if (notifyAlarm) {
+        notifyAlarm.fireDate = alarmTime;
+        notifyAlarm.timeZone = [NSTimeZone defaultTimeZone];
+        notifyAlarm.repeatInterval = 0;
+        notifyAlarm.soundName = @"";
+        notifyAlarm.alertBody = @"Text Messenger in action!";
+        notifyAlarm.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber] + 1;
+
+        NSDictionary *tempDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"abc12345", @"messagekey", nil ];
+        notifyAlarm.userInfo = tempDict;
+        
+        [[UIApplication sharedApplication] scheduleLocalNotification:notifyAlarm];
+        
+    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
+    UIApplication *app = [UIApplication sharedApplication];
+    NSArray *oldNotifications = [app scheduledLocalNotifications];
+    if ([oldNotifications count] > 0 ) {
+        [app cancelAllLocalNotifications];
+        
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -123,6 +156,42 @@
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
 
+- (void) application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    application.applicationIconBadgeNumber = 0;
+//    MainController *room = [[MainController alloc] init];
+//    room.isFromNotification = @"1";
+//    [self.window.rootViewController presentViewController:room
+//                                                 animated:YES
+//                                               completion:nil];
+    
+    [[UIApplication sharedApplication] cancelLocalNotification:notification];
+    [[self window] makeKeyAndVisible];
+    
+    UITabBarController *tab = (UITabBarController *)self.window.rootViewController;                             // Inserted
+    tab.selectedIndex = 0;                                                                                      // Inserted
+    
+    //UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+    UINavigationController *navigationController = (UINavigationController *)[tab selectedViewController];      // Inserted
 
+    //MainController *dv = nil;
+    MainController *dv = [[MainController alloc]init];
+    
+    //dv = (MainController *)[[navigationController viewControllers] objectAtIndex:0];
+    //dv = [[navigationController viewControllers]objectAtIndex:0];
+    dv = [[navigationController viewControllers] objectAtIndex:0];
+    
+    if ([notification.userInfo valueForKey:@"messagekey"] !=nil)
+    {
+        NSLog(@"This is notification window 1 and key %@", notification.userInfo);
+        //[dv performSegueWithIdentifier:@"segone" sender:self];
+        
+        NSString *sample = [NSString stringWithFormat:@"%@", [notification.userInfo valueForKey:@"messagekey"]];
+        //dv.notificationID = sample; //[notification.userInfo valueForKey:@"messagekey"];
+        dv.notificationID = sample;
+        
+    }
+        [dv CallOtherView];
+}
 
 @end

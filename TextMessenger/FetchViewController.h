@@ -11,14 +11,16 @@
 
 @interface FetchViewController : ControlViewController
 
+@property (nonatomic, strong) NSString *templateID;
+@property (nonatomic, strong) NSString *templateContent;
 
-@property (nonatomic, strong) IBOutlet UILabel *greetingId;
-@property (nonatomic, strong) IBOutlet UILabel *greetingContent;
-@property (nonatomic, strong) IBOutlet UITextField *txtId;
-- (IBAction)fetchGreeting;
+@property (strong, nonatomic) IBOutlet UILabel *lblContent;
 
+- (IBAction)Send:(id)sender;
+- (IBAction)doneButton:(id)sender;
+//- (IBAction)fetchGreeting;
 //- (IBAction)cancelButton:(id)sender;
 
-- (IBAction)doneButton:(id)sender;
+
 
 @end
