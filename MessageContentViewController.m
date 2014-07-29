@@ -32,6 +32,7 @@
     [self contentDisplay];
     
     self.contentLabel.text = self.msgID;
+    
 }
 
 - (void)contentDisplay

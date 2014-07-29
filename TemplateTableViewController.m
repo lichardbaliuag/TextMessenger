@@ -84,7 +84,6 @@
         NSString *templateID = [dataDict objectForKey:@"TemplateID"];
         NSString *templateTitle = [dataDict objectForKey:@"TemplateTitle"];
         
-        
         dictionary = [NSDictionary dictionaryWithObjectsAndKeys:
                       backroundImage, @"BackroundImage",
                       createdBy, @"CreatedBy",

@@ -692,12 +692,6 @@
     //[self dismissViewControllerAnimated:YES completion:nil];
 }
 
-
-
-
-
-
-
 #pragma UITextView above UIKeyboard
 /*
  - (void)keyboardWillShow:(NSNotification *)notification

@@ -176,8 +176,9 @@
         if ([segue.identifier isEqualToString:@"messageDetail"])
         {
             
-            MessageContentViewController *dv = segue.destinationViewController;
-            dv.msgID = self.notificationID;
+            MessageContentViewController *mcvc = segue.destinationViewController;
+            mcvc.msgID = self.notificationID;
+            mcvc.msgContent = self.msgContent1;
             
             
 //            NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
@@ -339,6 +340,7 @@
 -(void)CallOtherView
 {
     [self performSegueWithIdentifier:@"messageDetail" sender:self ];
+    
 }
 
 

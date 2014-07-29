@@ -16,9 +16,11 @@
 @property (nonatomic, strong) IBOutlet UITextView *messageContent;
 @property (strong, nonatomic) id detailItem;
 
-@property (nonatomic, strong) NSString *msgContent;
+
+
 @property (nonatomic, strong) NSString *msgID;
 
+@property (strong, nonatomic) IBOutlet UILabel *msgContentDetails;
 @property (strong, nonatomic) IBOutlet UILabel *dateToSend;
 @property (strong, nonatomic) IBOutlet UILabel *status;
 @property (strong, nonatomic) IBOutlet UILabel *contentLabel;

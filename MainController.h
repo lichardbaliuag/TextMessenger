@@ -19,12 +19,17 @@
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
-@property (strong, nonatomic) NSString *isFromNotification;
-@property (nonatomic,strong) NSString *notificationID;
-@property (nonatomic, strong)NSString *test;
+@property (nonatomic, strong) NSString *isFromNotification;
+@property (nonatomic, strong) NSString *notificationID;
+@property (nonatomic, strong) NSString *test;
 
 //@property (nonatomic, strong) UserProfile *userProfile;
-@property (nonatomic, strong) UserMessages *userMessages;
+@property (nonatomic, strong) NSString *msgGuid;
+@property (nonatomic, strong) NSString *resName;
+@property (nonatomic, strong) NSString *msgContent1;
+
+
+@property (nonatomic, strong) UserMessages *userMessages;       // Entity
 
 -(void)CallOtherView;
 
