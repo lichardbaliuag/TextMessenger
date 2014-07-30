@@ -40,13 +40,14 @@
 		2C56B334188EBD7100934AF8 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C56B333188EBD7100934AF8 /* MessageUI.framework */; };
 		2C56B336188EBF1B00934AF8 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C56B335188EBF1B00934AF8 /* AddressBookUI.framework */; };
 		2C56B338188EBF2B00934AF8 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C56B337188EBF2B00934AF8 /* AddressBook.framework */; };
+		2C62A899198954A400B39D96 /* UserMessages.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C62A898198954A400B39D96 /* UserMessages.m */; };
+		2C62A89D198957B000B39D96 /* CommonCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C62A89C198957B000B39D96 /* CommonCoreData.m */; };
 		2C8644A018CF3B87005AA2B0 /* THChatInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C86449D18CF3B87005AA2B0 /* THChatInput.m */; };
 		2C8644A518CF52D6005AA2B0 /* AddMessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C8644A418CF52D6005AA2B0 /* AddMessViewController.m */; };
 		2C888F851907E010003B53AC /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C888F841907E010003B53AC /* AboutViewController.m */; };
 		2C888F881907E041003B53AC /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C888F871907E041003B53AC /* ProfileViewController.m */; };
 		2C955DB8167306AE003D3A8F /* ComposeMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C955DB6167306AE003D3A8F /* ComposeMessageViewController.m */; };
 		2CA0ED59190237AC00E1CEE6 /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA0ED58190237AC00E1CEE6 /* MessageCell.m */; };
-		2CA5698D191A0F3A006ED1BC /* UserMessages.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA5698C191A0F3A006ED1BC /* UserMessages.m */; };
 		2CA56990191A0F3A006ED1BC /* UserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA5698F191A0F3A006ED1BC /* UserProfile.m */; };
 		2CA56996191A0F3A006ED1BC /* Templates.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA56995191A0F3A006ED1BC /* Templates.m */; };
 		2CA755A619052B2100251545 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA755A519052B2100251545 /* SettingsTableViewController.m */; };
@@ -120,6 +121,10 @@
 		2C56B333188EBD7100934AF8 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		2C56B335188EBF1B00934AF8 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		2C56B337188EBF2B00934AF8 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		2C62A897198954A400B39D96 /* UserMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserMessages.h; sourceTree = "<group>"; };
+		2C62A898198954A400B39D96 /* UserMessages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserMessages.m; sourceTree = "<group>"; };
+		2C62A89B198957B000B39D96 /* CommonCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonCoreData.h; sourceTree = "<group>"; };
+		2C62A89C198957B000B39D96 /* CommonCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonCoreData.m; sourceTree = "<group>"; };
 		2C86449C18CF3B87005AA2B0 /* THChatInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = THChatInput.h; sourceTree = "<group>"; };
 		2C86449D18CF3B87005AA2B0 /* THChatInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = THChatInput.m; sourceTree = "<group>"; };
 		2C8644A418CF52D6005AA2B0 /* AddMessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AddMessViewController.m; path = ../AddMessViewController.m; sourceTree = "<group>"; };
@@ -131,8 +136,6 @@
 		2C955DB6167306AE003D3A8F /* ComposeMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ComposeMessageViewController.m; path = ../ComposeMessageViewController.m; sourceTree = "<group>"; };
 		2CA0ED57190237AC00E1CEE6 /* MessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MessageCell.h; path = ../MessageCell.h; sourceTree = "<group>"; };
 		2CA0ED58190237AC00E1CEE6 /* MessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MessageCell.m; path = ../MessageCell.m; sourceTree = "<group>"; };
-		2CA5698B191A0F3A006ED1BC /* UserMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserMessages.h; sourceTree = "<group>"; };
-		2CA5698C191A0F3A006ED1BC /* UserMessages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserMessages.m; sourceTree = "<group>"; };
 		2CA5698E191A0F3A006ED1BC /* UserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserProfile.h; sourceTree = "<group>"; };
 		2CA5698F191A0F3A006ED1BC /* UserProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserProfile.m; sourceTree = "<group>"; };
 		2CA56994191A0F3A006ED1BC /* Templates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Templates.h; sourceTree = "<group>"; };
@@ -185,6 +188,7 @@
 		2C296EA71661195300C9143C = {
 			isa = PBXGroup;
 			children = (
+				2C62A89A1989579100B39D96 /* Common */,
 				2C62A89119854F9900B39D96 /* Settings */,
 				2C49434E18F824CE0078055C /* CoreData */,
 				2C296EBC1661195300C9143C /* TextMessenger */,
@@ -308,12 +312,12 @@
 				2C55B4EF194A04AA0050836C /* SystemCode.h */,
 				2C55B4F0194A04AA0050836C /* SystemCode.m */,
 				2C49434A18F7E7E00078055C /* TMData.xcdatamodeld */,
+				2C62A897198954A400B39D96 /* UserMessages.h */,
+				2C62A898198954A400B39D96 /* UserMessages.m */,
 				2CA56994191A0F3A006ED1BC /* Templates.h */,
 				2CA56995191A0F3A006ED1BC /* Templates.m */,
 				2CA5698E191A0F3A006ED1BC /* UserProfile.h */,
 				2CA5698F191A0F3A006ED1BC /* UserProfile.m */,
-				2CA5698B191A0F3A006ED1BC /* UserMessages.h */,
-				2CA5698C191A0F3A006ED1BC /* UserMessages.m */,
 			);
 			name = CoreData;
 			sourceTree = "<group>";
@@ -323,6 +327,15 @@
 			children = (
 			);
 			name = Settings;
+			sourceTree = "<group>";
+		};
+		2C62A89A1989579100B39D96 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2C62A89B198957B000B39D96 /* CommonCoreData.h */,
+				2C62A89C198957B000B39D96 /* CommonCoreData.m */,
+			);
+			name = Common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -430,6 +443,7 @@
 				2C296EC71661195300C9143C /* AppDelegate.m in Sources */,
 				2CA56990191A0F3A006ED1BC /* UserProfile.m in Sources */,
 				2C49436F18FBFFF40078055C /* selectDateViewController.m in Sources */,
+				2C62A899198954A400B39D96 /* UserMessages.m in Sources */,
 				2C888F881907E041003B53AC /* ProfileViewController.m in Sources */,
 				2C296ED31661195300C9143C /* FirstViewController.m in Sources */,
 				2CA755A619052B2100251545 /* SettingsTableViewController.m in Sources */,
@@ -444,10 +458,10 @@
 				2C49436C18FBF4050078055C /* ControlViewController.m in Sources */,
 				2C05F4B81681A40C00DA4296 /* Custom.m in Sources */,
 				2C888F851907E010003B53AC /* AboutViewController.m in Sources */,
+				2C62A89D198957B000B39D96 /* CommonCoreData.m in Sources */,
 				2CAEF11118B784EF00575BD0 /* JSBackspaceReportingTextField.m in Sources */,
 				2CA0ED59190237AC00E1CEE6 /* MessageCell.m in Sources */,
 				2CAEF11218B784EF00575BD0 /* JSTokenButton.m in Sources */,
-				2CA5698D191A0F3A006ED1BC /* UserMessages.m in Sources */,
 				2CAEF11318B784EF00575BD0 /* JSTokenField.m in Sources */,
 				2C078FEC1983F4DE00F3B69B /* TemplateTableViewController.m in Sources */,
 			);

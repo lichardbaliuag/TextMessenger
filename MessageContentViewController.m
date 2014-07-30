@@ -30,8 +30,21 @@
     [super viewDidLoad];
     
     [self contentDisplay];
+    //self.userMessages =
     
-    self.contentLabel.text = self.msgID;
+    
+    self.msgContentDetails.text = self.userMessages.messageContent;
+    
+    NSDateFormatter *dateFormatter;
+    
+    dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd/MM/yyyy hh:mm a"];// here set format which you want...
+    
+    NSString *convertedString = [dateFormatter stringFromDate:self.userMessages.sendDate];
+
+    
+    self.dateToSend.text = convertedString;
+    self.status.text = [NSString stringWithFormat:@"%@", self.userMessages.messageStatusCode];
     
 }
 

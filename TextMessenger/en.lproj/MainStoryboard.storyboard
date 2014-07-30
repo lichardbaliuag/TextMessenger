@@ -323,7 +323,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Htp-KZ-Pfc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2672" y="-1352"/>
+            <point key="canvasLocation" x="2761" y="-1352"/>
         </scene>
         <!--Navigation Controller - Message-->
         <scene sceneID="PHC-jg-adf">
@@ -372,7 +372,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date to send" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ivk-bk-KzC">
-                                <rect key="frame" x="28" y="108" width="113" height="21"/>
+                                <rect key="frame" x="28" y="108" width="181" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
@@ -383,14 +383,8 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message ID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="skh-bN-dTQ">
-                                <rect key="frame" x="28" y="79" width="255" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message content" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9cg-bh-CS1">
-                                <rect key="frame" x="28" y="137" width="255" height="21"/>
+                                <rect key="frame" x="28" y="137" width="255" height="354"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -401,7 +395,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="Z7Q-HR-5Ss"/>
                     <connections>
-                        <outlet property="contentLabel" destination="skh-bN-dTQ" id="KiQ-LF-9NU"/>
                         <outlet property="dateToSend" destination="ivk-bk-KzC" id="2d6-Ov-c5t"/>
                         <outlet property="messageContent" destination="9cg-bh-CS1" id="3br-HI-r2d"/>
                         <outlet property="msgContentDetails" destination="9cg-bh-CS1" id="Q6j-He-zhS"/>

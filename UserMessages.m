@@ -2,7 +2,7 @@
 //  UserMessages.m
 //  TextMessenger
 //
-//  Created by Lichard Baliuag on 7/5/14.
+//  Created by Lichard Baliuag on 31/7/14.
 //  Copyright (c) 2014 Lichard Baliuag. All rights reserved.
 //
 

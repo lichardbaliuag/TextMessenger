@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "MainController.h"
-#import "MessageContentViewController.h"
+//#import "MessageContentViewController.h"
 
 @implementation AppDelegate
 
@@ -141,7 +141,7 @@
     if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error])
     {
         NSLog(@"Unresolve error %@, %@", error, [error userInfo]);
-        abort();
+        //abort();
     }
     return _persistentStoreCoordinator;
 }
@@ -174,8 +174,8 @@
     //UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
     UINavigationController *navigationController = (UINavigationController *)[tab selectedViewController];      // Inserted
 
-    //MainController *dv = nil;
-    MainController *dv = [[MainController alloc]init];
+    MainController *dv = nil;
+    //MainController *dv = [[MainController alloc]init];
     
     //dv = (MainController *)[[navigationController viewControllers] objectAtIndex:0];
     //dv = [[navigationController viewControllers]objectAtIndex:0];

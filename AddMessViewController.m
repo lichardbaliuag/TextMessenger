@@ -660,7 +660,15 @@
         [myMO setValue:[NSDate date] forKey:@"messageDateCreated"];
         [myMO setValue:@11 forKey:@"messageStatusCode"];
         [myMO setValue:@"lichard@yahoo.com" forKey:@"senderEmail"];
+        
+        NSUUID  *UUID = [NSUUID UUID];
+        NSString* stringUUID = [UUID UUIDString];
+
+        [myMO setValue:stringUUID forKey:@"messageGuid"];
+        
+        
         //[myMO setValue:87651234 forKey:@"senderNumber"];
+        NSLog(@"%@", stringUUID);
         
         NSLog(@"Recipient No: %@", [NSNumber numberWithInteger:[strippedNumber integerValue]]);
         NSLog(@"Name: %@", _personRecipient.text);

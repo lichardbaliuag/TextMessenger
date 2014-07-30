@@ -8,7 +8,6 @@
 
 #import "MainController.h"
 #import "MessageContentViewController.h"
-//#import "ComposeMessageViewController.h"
 #import "Custom.h"
 #import "AddMessViewController.h"
 #import "AppDelegate.h"
@@ -16,9 +15,12 @@
 
 
 @interface MainController ()
+{
+    NSArray *message;
+}
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
-@property (strong) NSMutableArray *messages;
+//@property (strong) NSMutableArray *messages;
 
 @end
 
@@ -73,22 +75,12 @@
     [super viewDidLoad];
    
     self.fetchedResultsController = nil;
-    
     NSError *error = nil;
     if (![[self fetchedResultsController]performFetch:&error])
     {
         NSLog(@"Error in viewDidLoad! %@", error);
-        abort();
+        //abort();
     }
-    
-    //-- self.name = [[NSMutableArray alloc]init];
-    //self.dateTimeSent = [[NSMutableArray alloc] init];
-    //self.dateTimeActivate = [[NSMutableArray alloc] init];
-    //self.msgContent = [[NSMutableArray alloc] init];
-    
-    //Initialize and populate UITableViewController
-    //--myArray = [NSMutableArray arrayWithObjects:@"Apple", @"Banana", @"Orange", @"Manggo", nil];
-    //--[self setTitle:@"Message"];
     
     // Uncomment the following line to preserve selection between presentations.
     //-- self.clearsSelectionOnViewWillAppear = NO;
@@ -103,6 +95,13 @@
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:24/255.0f green:177/255.0f blue:16/255.0f alpha:1.0f];
     
 }
+
+- (void) LoadData
+{
+    //AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    
+}
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -176,9 +175,20 @@
         if ([segue.identifier isEqualToString:@"messageDetail"])
         {
             
+            NSIndexPath *path = [self.tableView indexPathForSelectedRow];
+            
+            UserMessages *msg = [self.fetchedResultsController objectAtIndexPath:path];
+            //[cell.textLabel setText:[NSString stringWithFormat:@"%@", [messages valueForKey:@"recipientName"]]];
+            //[cell.detailTextLabel setText:[NSString stringWithFormat:@"%@", [messages valueForKey:@"messageContent"]]];
+            
+            //cell.textLabel.text = [NSString stringWithFormat:@"%@", msg.recipientName];
+            
             MessageContentViewController *mcvc = segue.destinationViewController;
-            mcvc.msgID = self.notificationID;
-            mcvc.msgContent = self.msgContent1;
+           // mcvc.messageGuid = msg.messageGuid;// [[message objectAtIndex:path.row] objectForKey:@"messageGuid"];
+            mcvc.userMessages = msg;
+            
+            //self.notificationID;
+            //mcvc.msgContent1 = self.msgContent1;
             
             
 //            NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
@@ -221,7 +231,7 @@
 
 - (NSFetchedResultsController *) fetchedResultsController
 {
-
+    
     if (_fetchedResultsController != nil)
     {
         return _fetchedResultsController;
@@ -261,8 +271,7 @@
 	    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	    abort();
 	}
-    //[sortDescriptor release];
-    //[fetchRequest release];
+
     return _fetchedResultsController;
 
 }

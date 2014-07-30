@@ -2,7 +2,7 @@
 //  UserMessages.h
 //  TextMessenger
 //
-//  Created by Lichard Baliuag on 7/5/14.
+//  Created by Lichard Baliuag on 31/7/14.
 //  Copyright (c) 2014 Lichard Baliuag. All rights reserved.
 //
 
@@ -18,7 +18,7 @@
 @property (nonatomic, retain) NSNumber * isdeleted;
 @property (nonatomic, retain) NSString * messageContent;
 @property (nonatomic, retain) NSDate * messageDateCreated;
-@property (nonatomic, retain) NSNumber * messageGuid;
+@property (nonatomic, retain) NSString * messageGuid;
 @property (nonatomic, retain) NSNumber * messageStatusCode;
 @property (nonatomic, retain) NSString * modifiedBy;
 @property (nonatomic, retain) NSString * recipientName;
