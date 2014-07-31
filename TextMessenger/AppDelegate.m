@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "MainController.h"
 //#import "MessageContentViewController.h"
+#import "CommonCoreData.h"
 
 @implementation AppDelegate
 
@@ -41,26 +42,62 @@
 {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-
     
-    NSDate *alarmTime = [[NSDate date] dateByAddingTimeInterval:3.0];
-    //UIApplication *app = [UIApplication sharedApplication];
-    UILocalNotification *notifyAlarm = [[UILocalNotification alloc]init];
     
-    if (notifyAlarm) {
-        notifyAlarm.fireDate = alarmTime;
-        notifyAlarm.timeZone = [NSTimeZone defaultTimeZone];
-        notifyAlarm.repeatInterval = 0;
-        notifyAlarm.soundName = @"";
-        notifyAlarm.alertBody = @"Text Messenger in action!";
-        notifyAlarm.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber] + 1;
-
-        NSDictionary *tempDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"abc12345", @"messagekey", nil ];
-        notifyAlarm.userInfo = tempDict;
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(sendDate >= %@)", [NSDate dateWithTimeIntervalSinceNow:1]];
+    
+    //[request setPredicate:predicate];
+    
+    //NSError *error;
+    
+    NSArray *dataArray = [[NSArray alloc]init];
+    
+    dataArray = [CommonCoreData GetUserMessages:nil];//[context executeFetchRequest:request error:&error];
+    
+    
+    for (NSManagedObject *ma in dataArray) {
         
-        [[UIApplication sharedApplication] scheduleLocalNotification:notifyAlarm];
+        UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+        localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:5];//[ma valueForKey:@"sendDate"];  //[NSDate dateWithTimeIntervalSinceNow:5];
+        localNotification.alertBody = [ma valueForKey:@"messageContent"];
+        localNotification.timeZone = [NSTimeZone defaultTimeZone];
+        localNotification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber] + 1;
         
+        NSDictionary *infoDict = [NSDictionary dictionaryWithObjectsAndKeys:[ma valueForKey:@"messageGuid"], @"messagekey", nil];
+        
+        localNotification.userInfo = infoDict;
+        
+        [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
     }
+
+    
+    
+    
+//    for (NSArray *arr in [CommonCoreData GetUserMessages:nil]) {
+//        <#statements#>
+//    }
+//    
+//    
+//    
+//    
+//    NSDate *alarmTime = [[NSDate date] dateByAddingTimeInterval:3.0];
+//    //UIApplication *app = [UIApplication sharedApplication];
+//    UILocalNotification *notifyAlarm = [[UILocalNotification alloc]init];
+//    
+//    if (notifyAlarm) {
+//        notifyAlarm.fireDate = alarmTime;
+//        notifyAlarm.timeZone = [NSTimeZone defaultTimeZone];
+//        notifyAlarm.repeatInterval = 0;
+//        notifyAlarm.soundName = @"";
+//        notifyAlarm.alertBody = @"Text Messenger in action!";
+//        notifyAlarm.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber] + 1;
+//
+//        NSDictionary *tempDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"00C3DEAC-F294-444E-974D-B81C5A1A6E3E", @"messagekey", nil ];
+//        notifyAlarm.userInfo = tempDict;
+//        
+//        [[UIApplication sharedApplication] scheduleLocalNotification:notifyAlarm];
+//        
+//    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application

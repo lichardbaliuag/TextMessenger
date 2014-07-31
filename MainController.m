@@ -28,6 +28,7 @@
 @implementation MainController
 
 @synthesize fetchedResultsController = _fetchedResultsController;
+@synthesize fetchedResultsControllerByGuid = _fetchedResultsControllerByGuid;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -172,6 +173,8 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
+    NSIndexPath *path = [self.tableView indexPathForSelectedRow];
+    
         if ([segue.identifier isEqualToString:@"messageDetail"])
         {
             
@@ -198,6 +201,25 @@
             
             
         }
+    else if ([segue.identifier isEqualToString:@"notificationDetail"])
+    {
+        
+       // NSIndexPath *path = [self.tableView indexPathForSelectedRow];
+        
+        UserMessages *msg= [[[self fetchedResultsControllerByMessageID:self.notificationID] fetchedObjects] firstObject];
+        
+        
+        
+        MessageContentViewController *mcvc = segue.destinationViewController;
+        // mcvc.messageGuid = msg.messageGuid;// [[message objectAtIndex:path.row] objectForKey:@"messageGuid"];
+        mcvc.userMessages = msg;
+       // UserMessages *msg = [self.fetchedResultsController objectAtIndexPath:path];
+//        
+//        MessageContentViewController *mcvc = segue.destinationViewController;
+//
+//        mcvc.userMessages = msg;
+
+    }
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -276,6 +298,59 @@
 
 }
 
+
+- (NSFetchedResultsController *) fetchedResultsControllerByMessageID:(NSString *)messageGuid
+{
+    
+    if (_fetchedResultsControllerByGuid != nil)
+    {
+        return _fetchedResultsControllerByGuid;
+        
+    }
+    //NSManagedObjectContext *context = [self managedObjectContext];
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+    //context = [appDelegate managedObjectContext];
+    self.managedObjectContext = [appDelegate managedObjectContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc]init];
+    
+    //NSEntityDescription *entity = [NSEntityDescription entityForName:@"UserMessages" inManagedObjectContext:_managedObjectContext];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"UserMessages" inManagedObjectContext:self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    // Set batch size to load only minimal data required.
+    [fetchRequest setFetchBatchSize:20];
+    
+    // To arrange according to recipient name
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]initWithKey:@"messageDateCreated" ascending:NO];
+    
+    // To hold the sorted recipient name teporarily
+    //NSArray *sortDescriptors = @[sortDescriptor];
+    //NSArray *sortDescriptors = [[NSArray alloc]initWithObjects:sortDescriptor, nil];
+    
+    // To assign an array for the sort desriptors property
+    fetchRequest.sortDescriptors = [[NSArray alloc]initWithObjects:sortDescriptor, nil]; //sortDescriptors;
+    
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"messageGuid CONTAINS %@", messageGuid];
+    [fetchRequest setPredicate:pred];
+    
+    _fetchedResultsControllerByGuid = [[NSFetchedResultsController alloc]initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+    
+    self.fetchedResultsControllerByGuid = _fetchedResultsControllerByGuid;
+    _fetchedResultsControllerByGuid.delegate = self;
+    
+    NSError *error = nil;
+	if (![self.fetchedResultsControllerByGuid performFetch:&error])
+    {
+	    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+	    abort();
+	}
+    
+    return _fetchedResultsControllerByGuid;
+    
+}
+
+
+
 #pragma mark - Fetched Results Controller Delegates
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
@@ -348,7 +423,7 @@
 
 -(void)CallOtherView
 {
-    [self performSegueWithIdentifier:@"messageDetail" sender:self ];
+    [self performSegueWithIdentifier:@"notificationDetail" sender:self ];
     
 }
 

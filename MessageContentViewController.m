@@ -42,10 +42,18 @@
     
     NSString *convertedString = [dateFormatter stringFromDate:self.userMessages.sendDate];
 
+    NSLog(@"messageguid %@", self.userMessages.messageGuid);
     
     self.dateToSend.text = convertedString;
     self.status.text = [NSString stringWithFormat:@"%@", self.userMessages.messageStatusCode];
     
+    
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    UINavigationController *navCon  = (UINavigationController*) [self.navigationController.viewControllers objectAtIndex:1];
+    navCon.navigationItem.title = self.userMessages.recipientName;
 }
 
 - (void)contentDisplay

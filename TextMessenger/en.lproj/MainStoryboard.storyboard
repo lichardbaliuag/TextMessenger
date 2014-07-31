@@ -128,6 +128,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="BUw-K5-6F4" kind="push" identifier="notificationDetail" id="RjZ-3x-89T"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8KM-Z3-524" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -454,6 +457,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="RjZ-3x-89T"/>
         <segue reference="2hm-RV-wsY"/>
     </inferredMetricsTieBreakers>
 </document>

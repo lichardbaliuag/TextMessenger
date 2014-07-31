@@ -17,6 +17,7 @@
     //NSMutableArray *myArray;
 }
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsControllerByGuid;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 @property (nonatomic, strong) NSString *isFromNotification;
