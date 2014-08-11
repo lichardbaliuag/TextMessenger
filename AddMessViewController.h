@@ -55,7 +55,7 @@
 
 
 -(IBAction) editingChanged:(id)sender;
--(IBAction) getDate:(id)sender;
+//-(IBAction) getDate:(id)sender;
 -(IBAction) cancelButton:(id)sender;
 -(IBAction) doneButton:(id)sender;
 

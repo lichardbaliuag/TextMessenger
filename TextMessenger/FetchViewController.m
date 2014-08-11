@@ -36,8 +36,9 @@
 {
     [super viewDidLoad];
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:cWR green:cGN blue:cBL alpha:cAL];
-
     self.lblContent.text = self.templateContent;
+    
+    [self.tabBarController.tabBar setHidden:YES];
 }
 
 - (void)didReceiveMemoryWarning

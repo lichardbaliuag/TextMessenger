@@ -52,13 +52,12 @@
     
     NSArray *dataArray = [[NSArray alloc]init];
     
-    dataArray = [CommonCoreData GetUserMessages:nil];//[context executeFetchRequest:request error:&error];
+    dataArray = [CommonCoreData GetUserMessages:predicate];//[context executeFetchRequest:request error:&error];
     
-    
-    for (NSManagedObject *ma in dataArray) {
-        
+    for (NSManagedObject *ma in dataArray)
+    {
         UILocalNotification *localNotification = [[UILocalNotification alloc] init];
-        localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:5];//[ma valueForKey:@"sendDate"];  //[NSDate dateWithTimeIntervalSinceNow:5];
+        localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:5]; //[ma valueForKey:@"sendDate"];  //[NSDate dateWithTimeIntervalSinceNow:5];
         localNotification.alertBody = [ma valueForKey:@"messageContent"];
         localNotification.timeZone = [NSTimeZone defaultTimeZone];
         localNotification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber] + 1;
@@ -69,17 +68,11 @@
         
         [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
     }
-
-    
-    
     
 //    for (NSArray *arr in [CommonCoreData GetUserMessages:nil]) {
 //        <#statements#>
 //    }
-//    
-//    
-//    
-//    
+//
 //    NSDate *alarmTime = [[NSDate date] dateByAddingTimeInterval:3.0];
 //    //UIApplication *app = [UIApplication sharedApplication];
 //    UILocalNotification *notifyAlarm = [[UILocalNotification alloc]init];

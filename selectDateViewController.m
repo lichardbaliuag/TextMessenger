@@ -8,7 +8,7 @@
 
 #import "selectDateViewController.h"
 #import "AddMessViewController.h"
-
+#import "AppDelegate.h"
 //#define kDatePickerTag 100
 
 @interface selectDateViewController ()
@@ -51,11 +51,11 @@
 
 	//-- The DAILY Button --//
     _dailyButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	_dailyButton.frame = CGRectMake(10, 130, 90.0f, 30.0f);                                 // 10, 130, 80.0f, 30.0f
+	_dailyButton.frame = CGRectMake(10, 110, 90.0f, 30.0f);                                 // 10, 130, 80.0f, 30.0f
 	_dailyButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;                    // Send button misalign here
     [_dailyButton setTitle:@"Daily" forState:UIControlStateNormal];                         // UIControlStateHighlighted
     //[_dailyButton setTitle:@"Daily" forState:UIControlStateHighlighted];
-    [_dailyButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    [_dailyButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     _dailyButton.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:14];
 	//_sendButton.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     _dailyButton.layer.borderColor = [[UIColor lightGrayColor]CGColor];
@@ -66,10 +66,10 @@
  
     //-- The WEEKLY Button --//
     _weeklyButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _weeklyButton.frame = CGRectMake(115, 130, 90.0f, 30.0f);
+    _weeklyButton.frame = CGRectMake(115, 110, 90.0f, 30.0f);
     _weeklyButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     [_weeklyButton   setTitle:@"Weekly" forState:UIControlStateNormal];
-    [_weeklyButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    [_weeklyButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     _weeklyButton.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:14];
     _weeklyButton.layer.borderColor = [[UIColor lightGrayColor]CGColor];
     _weeklyButton.layer.borderWidth = 0.5f;
@@ -79,10 +79,10 @@
     
     //-- The WEEKLY Button --//
     _monthlyButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _monthlyButton.frame = CGRectMake(220, 130, 90.0f, 30.0f);
+    _monthlyButton.frame = CGRectMake(220, 110, 90.0f, 30.0f);
     _monthlyButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     [_monthlyButton   setTitle:@"Monthly" forState:UIControlStateNormal];
-    [_monthlyButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    [_monthlyButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     _monthlyButton.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:14];
     _monthlyButton.layer.borderColor = [[UIColor lightGrayColor]CGColor];
     _monthlyButton.layer.borderWidth = 0.5f;
@@ -95,19 +95,7 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 /*
 - (IBAction)cancelButton:(id)sender
@@ -120,30 +108,16 @@
 {
     _formatter = [[NSDateFormatter alloc] init];
     [_formatter setDateFormat:@"dd-MMM-YYY h:mm a "];
-    // Gets our picker
     _chosenDate = [_datePicker date];
-    //NSDate *chosenDate = [NSDate date];
-    _dateString = [NSString stringWithFormat:@"%@", [_formatter stringFromDate:_chosenDate]];
-    
+    self.labelDateSelected.text = [_formatter stringFromDate:_datePicker.date];
 }
 
 
 - (IBAction)doneButton:(id)sender
 {
-    AddMessViewController *amv = [self.storyboard instantiateViewControllerWithIdentifier:@"AddMessViewController"];
-    //amv.sendDate.titleLabel.text = [NSString stringWithFormat:@"%@",[_formatter stringFromDate:_chosenDate]];
-    [amv.sendDate setTitle:_dateString forState:UIControlEventValueChanged];
+    AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    delegate.selectedDate = self.chosenDate;
     
-    [self.delegate passDateString:self didPassDateString:_dateString];
-    
-    if  ([_chosenDate isEqual:nil])
-    {
-        _chosenDate = [_datePicker date];
-        NSLog(@"%@",[NSString stringWithFormat:@"%@", _chosenDate]);
-    }
-    //[_formatter release];
-    
-    NSLog(@"%@",[NSString stringWithFormat:@"%@", _chosenDate]);
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -174,7 +148,6 @@
     NSLog(@"%@",[NSString stringWithFormat:@"%@", _chosenDate]);
     [self.navigationController popViewControllerAnimated:YES];
 }
-
 
 - (void)dealloc {
     //[super dealloc];

@@ -8,7 +8,7 @@
 
 #import "MainController.h"
 #import "MessageContentViewController.h"
-#import "Custom.h"
+//#import "Custom.h"
 #import "AddMessViewController.h"
 #import "AppDelegate.h"
 #import "MessageCell.h"
@@ -62,7 +62,6 @@
 }
 
 - (void)dealloc {
-    //[super dealloc];
     
 }
 
@@ -75,6 +74,8 @@
     
     [super viewDidLoad];
    
+    [self.tableView registerNib:[UINib nibWithNibName:@"CustomCellMessageDetails" bundle:nil] forCellReuseIdentifier:@"Cell"];
+    
     self.fetchedResultsController = nil;
     NSError *error = nil;
     if (![[self fetchedResultsController]performFetch:&error])
@@ -97,17 +98,16 @@
     
 }
 
-- (void) LoadData
-{
-    //AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    
-}
+//- (void) LoadData
+//{
+//    //AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+//    
+//}
 
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
@@ -120,8 +120,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-
-    //return self.messages.count;
     id<NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections]objectAtIndex:section];
     return [sectionInfo numberOfObjects];
 }
@@ -129,35 +127,18 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    //Custom *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-    
-   // NSDateFormatter *formatter = [[[NSDateFormatter alloc]init]autorelease];
-    //[formatter setDateFormat:@"dd-MMM-YYY h:mm a "];
-
-    //MessageCell *cell = (MessageCell *)[tableView dequeueReusableHeaderFooterViewWithIdentifier:@"msgCell"];
-    //UserMessages *userMessages = [self.fetchedResultsController objectAtIndexPath:indexPath.row];
-    //NSManagedObject *messages = [self.messages objectAtIndex:indexPath.row];
+    MessageCell *cell =(MessageCell *) [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     UserMessages *msg = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    //[cell.textLabel setText:[NSString stringWithFormat:@"%@", [messages valueForKey:@"recipientName"]]];
-    //[cell.detailTextLabel setText:[NSString stringWithFormat:@"%@", [messages valueForKey:@"messageContent"]]];
 
-    cell.textLabel.text = [NSString stringWithFormat:@"%@", msg.recipientName];
-    cell.detailTextLabel.text = msg.messageContent;
-    //cell.sendDateCell.text = [NSString stringWithFormat:@"%@", [formatter stringFromDate:userMessages.sendDate]];
-    //cell.textLabel.text = [NSString stringWithFormat:@"%i", userMessages.recipientNumber]; // if String
-    
+    //cell.imgRecipientImage =
+    cell.labelSendToDate.text = @"15-Aug-2014 8:00PM";
+    cell.labelStatus.text = @"Sent";
+    cell.labelRecipientName.text = msg.recipientName;
+    cell.labelMessageDetails.text = msg.messageContent;
     
     return cell;
-    //[formatter release];
-    
-    //To Set Selected Background Color
-    UIImageView *selectedBackground = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, 320,100)];
-    selectedBackground.backgroundColor = [UIColor orangeColor];
-    [cell setSelectedBackgroundView:selectedBackground];
-    
+
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -168,57 +149,28 @@
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {    
+    [self performSegueWithIdentifier:@"MessageDetail" sender:self ];
 
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    
-    NSIndexPath *path = [self.tableView indexPathForSelectedRow];
-    
-        if ([segue.identifier isEqualToString:@"messageDetail"])
+
+        if ([segue.identifier isEqualToString:@"MessageDetail"])
         {
             
             NSIndexPath *path = [self.tableView indexPathForSelectedRow];
-            
             UserMessages *msg = [self.fetchedResultsController objectAtIndexPath:path];
-            //[cell.textLabel setText:[NSString stringWithFormat:@"%@", [messages valueForKey:@"recipientName"]]];
-            //[cell.detailTextLabel setText:[NSString stringWithFormat:@"%@", [messages valueForKey:@"messageContent"]]];
-            
-            //cell.textLabel.text = [NSString stringWithFormat:@"%@", msg.recipientName];
-            
             MessageContentViewController *mcvc = segue.destinationViewController;
-           // mcvc.messageGuid = msg.messageGuid;// [[message objectAtIndex:path.row] objectForKey:@"messageGuid"];
             mcvc.userMessages = msg;
             
-            //self.notificationID;
-            //mcvc.msgContent1 = self.msgContent1;
-            
-            
-//            NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-//            NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-//            [[segue destinationViewController] setDetailItem:object];
-
-            
-            
         }
-    else if ([segue.identifier isEqualToString:@"notificationDetail"])
-    {
-        
-       // NSIndexPath *path = [self.tableView indexPathForSelectedRow];
-        
-        UserMessages *msg= [[[self fetchedResultsControllerByMessageID:self.notificationID] fetchedObjects] firstObject];
-        
-        
-        
-        MessageContentViewController *mcvc = segue.destinationViewController;
-        // mcvc.messageGuid = msg.messageGuid;// [[message objectAtIndex:path.row] objectForKey:@"messageGuid"];
-        mcvc.userMessages = msg;
-       // UserMessages *msg = [self.fetchedResultsController objectAtIndexPath:path];
-//        
-//        MessageContentViewController *mcvc = segue.destinationViewController;
-//
-//        mcvc.userMessages = msg;
-
+        else if ([segue.identifier isEqualToString:@"notificationDetail"])
+        {
+            UserMessages *msg= [[[self fetchedResultsControllerByMessageID:self.notificationID] fetchedObjects] firstObject];
+            MessageContentViewController *mcvc = segue.destinationViewController;
+            // mcvc.messageGuid = msg.messageGuid;// [[message objectAtIndex:path.row] objectForKey:@"messageGuid"];
+            mcvc.userMessages = msg;
+            // UserMessages *msg = [self.fetchedResultsController objectAtIndexPath:path];
     }
 }
 
@@ -259,13 +211,10 @@
         return _fetchedResultsController;
         
     }
-    //NSManagedObjectContext *context = [self managedObjectContext];
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
-    //context = [appDelegate managedObjectContext];
     self.managedObjectContext = [appDelegate managedObjectContext];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc]init];
     
-    //NSEntityDescription *entity = [NSEntityDescription entityForName:@"UserMessages" inManagedObjectContext:_managedObjectContext];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"UserMessages" inManagedObjectContext:self.managedObjectContext];
     [fetchRequest setEntity:entity];
     
@@ -274,15 +223,17 @@
     
     // To arrange according to recipient name
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]initWithKey:@"messageDateCreated" ascending:NO];
+    //NSSortDescriptor *sortRecipientName = [[NSSortDescriptor alloc]initWithKey:@"recipientName" ascending:YES];
     
-    // To hold the sorted recipient name teporarily
-    //NSArray *sortDescriptors = @[sortDescriptor];
-    //NSArray *sortDescriptors = [[NSArray alloc]initWithObjects:sortDescriptor, nil];
-    
+    //NSArray *sortArray = [NSArray arrayWithObjects:sortDescriptor,sortRecipientName, nil];
+    NSArray *sortArray = [NSArray arrayWithObjects:sortDescriptor,sortDescriptor, nil];
+
+    [fetchRequest setSortDescriptors:sortArray];
+
     // To assign an array for the sort desriptors property
     fetchRequest.sortDescriptors = [[NSArray alloc]initWithObjects:sortDescriptor, nil]; //sortDescriptors;
     
-    _fetchedResultsController = [[NSFetchedResultsController alloc]initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+    _fetchedResultsController = [[NSFetchedResultsController alloc]initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:@"messageDateCreated" cacheName:nil];
     
     self.fetchedResultsController = _fetchedResultsController;
     _fetchedResultsController.delegate = self;
@@ -307,13 +258,10 @@
         return _fetchedResultsControllerByGuid;
         
     }
-    //NSManagedObjectContext *context = [self managedObjectContext];
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
-    //context = [appDelegate managedObjectContext];
     self.managedObjectContext = [appDelegate managedObjectContext];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc]init];
     
-    //NSEntityDescription *entity = [NSEntityDescription entityForName:@"UserMessages" inManagedObjectContext:_managedObjectContext];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"UserMessages" inManagedObjectContext:self.managedObjectContext];
     [fetchRequest setEntity:entity];
     
@@ -349,10 +297,16 @@
     
 }
 
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    NSArray *sections = [[self fetchedResultsController] sections];
+    
+    id<NSFetchedResultsSectionInfo> currentSection = [sections objectAtIndex:section];
+    return  [currentSection name];
+}
 
 
 #pragma mark - Fetched Results Controller Delegates
-
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
     [self.tableView beginUpdates];
@@ -388,8 +342,6 @@
         case NSFetchedResultsChangeUpdate:
             {
             // Ref: http://www.youtube.com/watch?v=ZoTAKAjEIFM  Time: 36:00
-            //[self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
-            
             UserMessages *userMessages = [self.fetchedResultsController objectAtIndexPath:indexPath];
             UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     

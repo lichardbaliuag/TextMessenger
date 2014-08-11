@@ -12,10 +12,10 @@
 #import "JSTokenField.h"
 //#import "THChatInput.h"
 #import "UserMessages.h"
-//#import "AppDelegate.h"
+#import "AppDelegate.h"
 #import "selectDateViewController.h"
 
-#define msgCodeOne 1
+#define msgCodeZero 0
 #define kDatePickerTag 100
 #define SelectButtonIndex 1
 #define CancelButtonIndex 2
@@ -45,7 +45,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        
+    
+    [self.tabBarController.tabBar setHidden:YES];
     // -- Initialize DATABASE -- //
     if (self.addMessage)
     {
@@ -147,7 +148,7 @@
     _sendDate.layer.borderWidth = 0.5f;
     _sendDate.layer.cornerRadius = 5;
     
-    [self.view addSubview:_sendDate];
+    [self.view addSubview:_sendDate];ch
     //[_sendDate release];                                      // ** Causes to crash
     //[toLabel1 release];
 
@@ -162,33 +163,31 @@
     self.sendDate.layer.cornerRadius = 5;
     
     // -- This block is temporary -- //
-    NSDateFormatter *dateFormatForDB = [[NSDateFormatter alloc] init];
-    [dateFormatForDB setDateFormat:@"dd-MMM-YYY h:mm a"];
-    NSDate *currentDate = [NSDate date];
-    [self.sendDate setTitle:[NSString stringWithFormat:@"%@", [dateFormatForDB stringFromDate:currentDate]] forState:UIControlStateNormal];
-    //[dateFormatForDB release];
+    //    NSDateFormatter *dateFormatForDB = [[NSDateFormatter alloc] init];
+    //    [dateFormatForDB setDateFormat:@"dd-MMM-YYYY hh:mm a"];
+    //    NSDate *currentDate = [NSDate date];
+    //    [self.sendDate setTitle:[NSString stringWithFormat:@"%@", [dateFormatForDB stringFromDate:currentDate]] forState:UIControlStateNormal];
+    //  [dateFormatForDB release];
+
     // ********************************************* //
-    
     // **** Create UITextView for message content ** //
     // ********************************************* //
-    
-    CGRect msgViewFrame = CGRectMake(10, 170, 300, 130);                                 // CGRectMake(X, Y, W, H)
-    _textViewMsgContent = [[UITextView alloc] initWithFrame:msgViewFrame];
-    _textViewMsgContent.backgroundColor = [UIColor clearColor];
-    _textViewMsgContent.font = [UIFont fontWithName:@"Helvetica" size:15];
-    //_textViewMsgContent.text = @"fff1";
 
-    [_textViewMsgContent setEditable:NO];
-    
-    //To make the border look very close to a UITextField
-    [_textViewMsgContent.layer setBorderColor:[[[UIColor grayColor] colorWithAlphaComponent:0.5] CGColor]];
-    [_textViewMsgContent.layer setBorderWidth:0.5];
-    
-    //The rounded corner part, where you specify your view's corner radius:
-    _textViewMsgContent.layer.cornerRadius = 5;
-    _textViewMsgContent.clipsToBounds = YES;
-    [self.view addSubview:_textViewMsgContent];
+//    CGRect msgViewFrame = CGRectMake(10, 170, 300, 130);                                 // CGRectMake(X, Y, W, H)
+//    _textViewMsgContent = [[UITextView alloc] initWithFrame:msgViewFrame];
+//    _textViewMsgContent.backgroundColor = [UIColor clearColor];
+//    _textViewMsgContent.font = [UIFont fontWithName:@"Helvetica" size:15];
+//    //_textViewMsgContent.text = @"fff1";
+//    [_textViewMsgContent setEditable:NO];
+//    //To make the border look very close to a UITextField
+//    [_textViewMsgContent.layer setBorderColor:[[[UIColor grayColor] colorWithAlphaComponent:0.5] CGColor]];
+//    [_textViewMsgContent.layer setBorderWidth:0.5];
+//    //The rounded corner part, where you specify your view's corner radius:
+//    _textViewMsgContent.layer.cornerRadius = 5;
+//    _textViewMsgContent.clipsToBounds = YES;
+//    [self.view addSubview:_textViewMsgContent];
 
+    // ********************************************* //
     
     // HANDLE TOKEN FIELD
     // *******
@@ -221,10 +220,28 @@
     // ********
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    
+    AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    NSDateFormatter *dateFormatForDB = [[NSDateFormatter alloc] init];
+    [dateFormatForDB setDateFormat:@"dd-MMM-YYYY hh:mm a"];
+    
+    if(delegate.selectedDate == nil)
+    {
+        NSDate *currentDate = [NSDate date];
+        delegate.selectedDate = currentDate;
+    }
+    
+    [self.sendDate setTitle:[NSString stringWithFormat:@"%@", [dateFormatForDB stringFromDate:delegate.selectedDate]] forState:UIControlStateNormal];
+}
+
 - (void) passDateString:(selectDateViewController *)controller didPassDateString:(NSString *)item
 {
     self.sendDate.titleLabel.text = item;
 }
+     
 
 #pragma mark - NSManageObjectContext
 
@@ -385,13 +402,6 @@
             NSLog(@"Second: %@ %@ ", name, phone);
         }
     
-        //NSLog(@"%@",[NSString stringWithFormat:@"%@",phone]);                     // Show passed value in console
-        //NSLog( @"name=%@, phone = %@, email = %@", name, phone, addresses);       // Show more person contact details
-        //NSLog(@"%@ %@ ", name, phone);                                            // Pass selected value to variable
-        //_personRecipient.text = [NSString stringWithFormat:@"%@, ", name];        // Passing Name- recipient field
-        //[self dismissViewControllerAnimated:YES completion:nil];                  // Dismiss View Controller
-        //[self getDate:self];                                                      // Call getDate function
-    //}
     //CFRelease(phoneProperty);
     //return phone;
     return name;
@@ -409,22 +419,8 @@
     _personRecipient.scrollEnabled = YES;  // turn scrolling back on.
 }
 
-/*
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    UITextPosition *beginning = _personRecipient.beginningOfDocument;
-    UITextPosition *start = [_personRecipient positionFromPosition:beginning offset:range.location];
-    UITextPosition *end = [_personRecipient positionFromPosition:start offset:range.length];
-    UITextRange *textRange = [_personRecipient textRangeFromPosition:start toPosition:end];
-    
-    //NSInteger cursorOffset = [_personRecipient offsetFromPosition:beginning toPosition:end];
-    [_personRecipient replaceRange:textRange withText:string];
-    _personRecipient.text = [NSString stringWithFormat:@"name"];
-}
-*/
-
 #pragma mark Date Picker
-
+/*
 -(IBAction)getDate:(id)sender
 {
     [_personRecipient resignFirstResponder];        // Hide keyboard when selecting date
@@ -438,17 +434,12 @@
     [pickDate setMinuteInterval:1];
     [pickDate setTag: kDatePickerTag];
     
-    //NSDateFormatter *formatter = [[[NSDateFormatter alloc]init]autorelease];
-    //[formatter setDateFormat:@"dd-MMM-YYY h:mm a"];
-    
     [dateView addSubview:pickDate];
     [av setValue:dateView forKey:@"accessoryView"]; // body of view
     [av show];                                      // to show the vie
     
-    //[pickDate release];
-    //[dateView release];
-    
 }
+*/
 
 // Method to respond to "Select" from UIAlertview
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -456,8 +447,6 @@
     //NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
     if (buttonIndex != [alertView cancelButtonIndex])
     {
-        //NSLog(@"Button Select pressed");
-        
         //Set Date Formatter
         NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
         [formatter setDateFormat:@"dd-MMM-YYY h:mm a "];
@@ -473,59 +462,7 @@
         //[formatter release];
         
         NSLog(@"%@", chosenDate);
-        //NSLog(@"%@",[NSString stringWithFormat:@"%@", chosenDate]);
-        
-        // ****** End of this point is NOT working ************
     }
-}
-
-/*
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex != [actionSheet cancelButtonIndex])
-    {
-        // set Date formatter
-        NSDateFormatter *formatter = [[[NSDateFormatter alloc] init]autorelease];
-        //[formatter setDateFormat:@"MMMM-dd-YYYY h:mm a"];
-        [formatter setDateFormat:@"dd-MMM-YYYY h:mm a"];
-        
-        // Gets our picker
-        UIDatePicker *ourDatePicker = (UIDatePicker *) [actionSheet viewWithTag:kDatePickerTag];
-        NSDate *selectedDate = [ourDatePicker date];
-		
-        // Change the label of button into date
-        _sendDate.titleLabel.text = [NSString stringWithFormat:@" When: %@ ",[formatter stringFromDate:selectedDate]];
-        [_sendDate setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
-        
-        //return [_personRecipient firstResponder];
-        NSLog(@"%@",[NSString stringWithFormat:@"%@",selectedDate]);
-      
-    }
-	//[sendDate release];
-}
-*/
-
-// Action Sheet that contains UIdate picker
--(void)willPresentActionSheet:(UIActionSheet *)actionSheet
-{
-/*
-	UIDatePicker *pickerView = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, 100, 320, 162)];
-	[pickerView setMinuteInterval:5];
-	[pickerView setTag: kDatePickerTag];
-    
-	// Add picker to action sheet
-	[actionSheet addSubview:pickerView];
-	//[pickerView release];                                                                 // Error here
-    
-	// Get array of all subviews of our actionsheet
-	NSArray *subviews = [[actionSheet subviews] autorelease];
-	//NSArray *subviews = [actionSheet subviews];
-    //[[subviews objectAtIndex:SelectButtonIndex] setFrame:CGRectMake(20, 250, 280, 46)];   // Select Button
-    //[[subviews objectAtIndex:CancelButtonIndex] setFrame:CGRectMake(20, 317, 280, 46)];   // Cancel Button
-    
-    [[subviews objectAtIndex:SelectButtonIndex] setFrame:CGRectMake(139, 470, 43, 30)];     // Select Button
-	[[subviews objectAtIndex:CancelButtonIndex] setFrame:CGRectMake(136, 518, 43, 30)];     // Cancel Button
-     */
 }
 
 #pragma mark -
@@ -555,7 +492,8 @@
 
 -(IBAction)cancelButton:(id)sender
 {
-
+    [self.tabBarController.tabBar setHidden:NO];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
     //[super cancelAndDismiss];
 }
@@ -572,16 +510,6 @@
         [alert show];
         return;
     }
-    /*
-     // Message alert after message sent
-     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message sender"
-     message:@"Your message has been sent!!!"
-     delegate:self
-     cancelButtonTitle:@"Okay"
-     otherButtonTitles:nil, nil];
-     //[alert show];
-     */
-    //[self dismissViewControllerAnimated:YES completion:nil];        // Dismiss UIView after send button pressed
     [super doneAndDismiss];
 }
 
@@ -591,37 +519,37 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
+
 // When background is tapped.
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     [self.view endEditing:YES];
     [super touchesBegan:touches withEvent:event];
-    NSLog(@"touchesBegan:withEvent:");
+    //NSLog(@"touchesBegan:withEvent:");
 }
-*/
+
 
 - (void)dealloc {
-    //[[NSNotificationCenter defaultCenter] removeObserver:self];
-	//[_personRecipient release], _personRecipient = nil;
-	//[_toField release], _toField = nil;
 
-    //[_textViewMsgContent release];
-    //[_chatInput release];
-    
-    //[_emojiInputView release];
-    //[super dealloc];
 }
 
 #pragma The SEND Button
 
 - (void)sendButtonPressed:(id)sender
 {
-    // ************** SAMPLE **************** //
+    
+    if ([_personRecipient.text isEqualToString:@""]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Empty recipient"
+                                                        message:@"Empty recipient not allowed"
+                                                       delegate:self
+                                              cancelButtonTitle:@"Okay"
+                                              otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
     
     NSString *msg = [NSString stringWithFormat:@"%@", _chatInput.textView.text ];
-    
     NSManagedObjectContext *context = [self manageObjectContext];
-    // Create new Managed Object
+    
     if (self.message)
     {
         // Update message using self.message which declared as ManageObject.
@@ -629,7 +557,8 @@
         [self.message setValue:self.textViewMsgContent.text forKey:@"messageContent"];
         NSLog(@"New: %@", _textViewMsgContent.text);
         
-    } else
+    }
+    else
     {
         // This created pointer to the NSManageObject then use the pointer to populate the attributes.
         NSManagedObject *myMO = [NSEntityDescription insertNewObjectForEntityForName:@"UserMessages"
@@ -652,13 +581,17 @@
 
         }
         
-        
         [myMO setValue:[NSNumber numberWithInteger:[strippedNumber integerValue]] forKey:@"recipientNumber"];
         [myMO setValue:_personRecipient.text forKey:@"recipientName"];
         //[myMO setValue:_textView.text forKey:@"messageContent"];
-        [myMO setValue:[NSDate date] forKey:@"sendDate"];
+        
+        AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        
+        NSDateFormatter *dateFormatForDB = [[NSDateFormatter alloc] init];
+        [dateFormatForDB setDateFormat:@"dd-MMM-YYYY hh:mm a"];
+        [myMO setValue:[delegate selectedDate] forKey:@"sendDate"];
         [myMO setValue:[NSDate date] forKey:@"messageDateCreated"];
-        [myMO setValue:@11 forKey:@"messageStatusCode"];
+        [myMO setValue:@0 forKey:@"messageStatusCode"];
         [myMO setValue:@"lichard@yahoo.com" forKey:@"senderEmail"];
         
         NSUUID  *UUID = [NSUUID UUID];
@@ -695,9 +628,6 @@
     _chatInput.textView.text = @" ";
     [_chatInput fitText];
     
-    //[_textView setText:@""];          //Clear textview
-    //[_textView resignFirstResponder]; // DOES NOT WORK
-    //[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma UITextView above UIKeyboard

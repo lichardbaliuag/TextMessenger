@@ -14,9 +14,7 @@
 @class selectDateViewController;
 
 @protocol sdViewControllerDelegate <NSObject>
-
 - (void) passDateString:(selectDateViewController *)controller didPassDateString:(NSString *)item;
-
 @end
 
 @interface selectDateViewController : UIViewController <UITextViewDelegate>
@@ -25,21 +23,20 @@
 @property (nonatomic, retain) UIButton *dailyButton;
 @property (nonatomic, retain) UIButton *weeklyButton;
 @property (nonatomic, retain) UIButton *monthlyButton;
+@property (strong, nonatomic) IBOutlet UILabel *labelDateSelected;
 
 @property (nonatomic, retain) NSDateFormatter *formatter;
 @property (nonatomic, retain) NSDate *chosenDate;
 @property (nonatomic, retain) NSString *dateString;
 
 @property (nonatomic, retain) id <sdViewControllerDelegate>delegate;
-
 //- (IBAction)cancelButton:(id)sender;
 - (IBAction)doneButton:(id)sender;
 - (IBAction)dailyButtPressed:(id)sender;
 - (IBAction)weeklyButtPressed:(id)sender;
 - (IBAction)monthlyButtPressed:(id)sender;
 
-- (void) pickDate:(id)sender;
-
+//- (void) pickDate:(id)sender;
 
 
 @end

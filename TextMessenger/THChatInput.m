@@ -31,7 +31,7 @@
    
 	// -- TextView -- //
     //_textView = [[UITextView alloc] initWithFrame:CGRectMake(70.0f, 0, 185, 0)];
-    _textView = [[UITextView alloc] initWithFrame:CGRectMake(50.0f, 0, 200, 30)];        // 20.0f, 0, 185, 0 (X, Y, W, H)
+    _textView = [[UITextView alloc] initWithFrame:CGRectMake(38.0f, 0, 210, 30)];        // 20.0f, 0, 185, 0 (X, Y, W, H)
     //_textView.text = @"aaaaabbbbb";
     
     //To make the border look very close to a UITextField
@@ -50,7 +50,7 @@
     _textView.showsHorizontalScrollIndicator = NO;
 	_textView.font = [UIFont systemFontOfSize:15.0f];
     _textView.autocorrectionType = UITextAutocorrectionTypeNo;
-    _textView.tintColor = [UIColor grayColor];                                          // Set cursor color to gray
+    _textView.tintColor = [UIColor redColor];                                          // Set cursor color to gray
     [self addSubview:_textView];
     //[_textView release];
     [self adjustTextInputHeightForText:@"" animated:NO];
@@ -115,7 +115,7 @@
    // this is to move chat text view to go up
    if (_autoResizeOnKeyboardVisibilityChanged)
    {
-      [UIView animateWithDuration:.35f animations:^{
+      [UIView animateWithDuration:.50f animations:^{        //.35f
          CGRect r = self.frame;
          r.origin.y -= 216;
          [self setFrame:r];
@@ -212,8 +212,8 @@
     
     CGSize size = CGSizeMake(_textView.frame.size.width - 16, 170.0f);
     
-    //NSInteger h2 = [text sizeWithFont:_textView.font constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping].height;
-    NSInteger h2 = [text boundingRectWithSize:size options:NSLineBreakByWordWrapping attributes:nil context:nil].size.height;
+    NSInteger h2 = [text sizeWithFont:_textView.font constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping].height;
+    //NSInteger h2 = [text boundingRectWithSize:size options:NSLineBreakByWordWrapping attributes:nil context:nil].size.height;
     
     
     [UIView animateWithDuration:(animated ? .1f : 0) animations:^
@@ -238,13 +238,13 @@
 
 - (void) awakeFromNib
 {
-    _inputHeight = 38.0f;                // 38.0f
-    _inputHeightWithShadow = 50.0f;      // 44.0f
+    _inputHeight = 38.0f;                               // 38.0f
+    _inputHeightWithShadow = 50.0f;                     // 44.0f
     _autoResizeOnKeyboardVisibilityChanged = YES;
     
     //[_textView becomeFirstResponder];               // Test if it becomes first responder
+    //NSLog(@"awakeFromNib - THChatInput");
     
-    NSLog(@"awakeFromNib - THChatInput");
     [self composeView];
 }
 

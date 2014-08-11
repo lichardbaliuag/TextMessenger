@@ -14,7 +14,7 @@
 + (NSArray *)GetUserMessages:(NSPredicate *)predicate;
 {
     
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *context =   [appDelegate managedObjectContext];
     NSEntityDescription *entityDesc =    [NSEntityDescription entityForName:@"UserMessages" inManagedObjectContext:context];
     NSFetchRequest *request = [[NSFetchRequest alloc] init];

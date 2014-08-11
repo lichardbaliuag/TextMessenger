@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2C05F4B81681A40C00DA4296 /* Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C05F4B71681A40B00DA4296 /* Custom.m */; };
 		2C078FEC1983F4DE00F3B69B /* TemplateTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C078FEB1983F4DE00F3B69B /* TemplateTableViewController.m */; };
 		2C296EB71661195300C9143C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C296EB61661195300C9143C /* UIKit.framework */; };
 		2C296EB91661195300C9143C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C296EB81661195300C9143C /* Foundation.framework */; };
@@ -42,6 +41,7 @@
 		2C56B338188EBF2B00934AF8 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C56B337188EBF2B00934AF8 /* AddressBook.framework */; };
 		2C62A899198954A400B39D96 /* UserMessages.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C62A898198954A400B39D96 /* UserMessages.m */; };
 		2C62A89D198957B000B39D96 /* CommonCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C62A89C198957B000B39D96 /* CommonCoreData.m */; };
+		2C62A8E319967E1000B39D96 /* CustomCellMessageDetails.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C62A8E219967E1000B39D96 /* CustomCellMessageDetails.xib */; };
 		2C8644A018CF3B87005AA2B0 /* THChatInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C86449D18CF3B87005AA2B0 /* THChatInput.m */; };
 		2C8644A518CF52D6005AA2B0 /* AddMessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C8644A418CF52D6005AA2B0 /* AddMessViewController.m */; };
 		2C888F851907E010003B53AC /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C888F841907E010003B53AC /* AboutViewController.m */; };
@@ -73,8 +73,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2C05F4B61681A40B00DA4296 /* Custom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Custom.h; path = ../Custom.h; sourceTree = "<group>"; };
-		2C05F4B71681A40B00DA4296 /* Custom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Custom.m; path = ../Custom.m; sourceTree = "<group>"; };
 		2C05F4B91681A73B00DA4296 /* AddMessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddMessViewController.h; path = ../AddMessViewController.h; sourceTree = "<group>"; };
 		2C078FEA1983F4DE00F3B69B /* TemplateTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TemplateTableViewController.h; path = ../TemplateTableViewController.h; sourceTree = "<group>"; };
 		2C078FEB1983F4DE00F3B69B /* TemplateTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TemplateTableViewController.m; path = ../TemplateTableViewController.m; sourceTree = "<group>"; };
@@ -125,6 +123,7 @@
 		2C62A898198954A400B39D96 /* UserMessages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserMessages.m; sourceTree = "<group>"; };
 		2C62A89B198957B000B39D96 /* CommonCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonCoreData.h; sourceTree = "<group>"; };
 		2C62A89C198957B000B39D96 /* CommonCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonCoreData.m; sourceTree = "<group>"; };
+		2C62A8E219967E1000B39D96 /* CustomCellMessageDetails.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CustomCellMessageDetails.xib; path = ../CustomCellMessageDetails.xib; sourceTree = "<group>"; };
 		2C86449C18CF3B87005AA2B0 /* THChatInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = THChatInput.h; sourceTree = "<group>"; };
 		2C86449D18CF3B87005AA2B0 /* THChatInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = THChatInput.m; sourceTree = "<group>"; };
 		2C8644A418CF52D6005AA2B0 /* AddMessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AddMessViewController.m; path = ../AddMessViewController.m; sourceTree = "<group>"; };
@@ -224,6 +223,7 @@
 			isa = PBXGroup;
 			children = (
 				2C296ECE1661195300C9143C /* MainStoryboard.storyboard */,
+				2C62A8E219967E1000B39D96 /* CustomCellMessageDetails.xib */,
 				2C296EC51661195300C9143C /* AppDelegate.h */,
 				2C296EC61661195300C9143C /* AppDelegate.m */,
 				2C49436A18FBF4050078055C /* ControlViewController.h */,
@@ -232,6 +232,8 @@
 				2C296EE91661AE1000C9143C /* MainController.m */,
 				2C296EF41666635500C9143C /* MessageContentViewController.h */,
 				2C296EF51666635600C9143C /* MessageContentViewController.m */,
+				2CA0ED57190237AC00E1CEE6 /* MessageCell.h */,
+				2CA0ED58190237AC00E1CEE6 /* MessageCell.m */,
 				2C05F4B91681A73B00DA4296 /* AddMessViewController.h */,
 				2C8644A418CF52D6005AA2B0 /* AddMessViewController.m */,
 				2C078FEA1983F4DE00F3B69B /* TemplateTableViewController.h */,
@@ -246,10 +248,6 @@
 				2CA755A519052B2100251545 /* SettingsTableViewController.m */,
 				2C49436D18FBFFF40078055C /* selectDateViewController.h */,
 				2C49436E18FBFFF40078055C /* selectDateViewController.m */,
-				2CA0ED57190237AC00E1CEE6 /* MessageCell.h */,
-				2CA0ED58190237AC00E1CEE6 /* MessageCell.m */,
-				2C05F4B61681A40B00DA4296 /* Custom.h */,
-				2C05F4B71681A40B00DA4296 /* Custom.m */,
 				2CAEF10B18B784EF00575BD0 /* JSTokenButton.h */,
 				2CAEF10C18B784EF00575BD0 /* JSTokenButton.m */,
 				2CAEF10D18B784EF00575BD0 /* JSTokenField.h */,
@@ -427,6 +425,7 @@
 				2CD8C81618D083800008FE6B /* Chat_Footer_BG@2x.png in Resources */,
 				2CAEF11018B784EF00575BD0 /* tokenNormal.png in Resources */,
 				2C49434518F7194E0078055C /* icon@2x.png in Resources */,
+				2C62A8E319967E1000B39D96 /* CustomCellMessageDetails.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -456,7 +455,6 @@
 				2C296EF61666635600C9143C /* MessageContentViewController.m in Sources */,
 				2C955DB8167306AE003D3A8F /* ComposeMessageViewController.m in Sources */,
 				2C49436C18FBF4050078055C /* ControlViewController.m in Sources */,
-				2C05F4B81681A40C00DA4296 /* Custom.m in Sources */,
 				2C888F851907E010003B53AC /* AboutViewController.m in Sources */,
 				2C62A89D198957B000B39D96 /* CommonCoreData.m in Sources */,
 				2CAEF11118B784EF00575BD0 /* JSBackspaceReportingTextField.m in Sources */,

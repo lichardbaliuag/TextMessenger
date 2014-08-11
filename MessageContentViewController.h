@@ -20,10 +20,12 @@
 
 
 @property (nonatomic, strong) NSString *messageGuid;
-
 @property (strong, nonatomic) IBOutlet UILabel *msgContentDetails;
 @property (strong, nonatomic) IBOutlet UILabel *dateToSend;
 @property (strong, nonatomic) IBOutlet UILabel *status;
 @property (strong, nonatomic) IBOutlet UILabel *contentLabel;
-@property (strong, nonatomic) IBOutlet UILabel *msgContent1;
+//@property (strong, nonatomic) IBOutlet UILabel *msgContent1;
+
+- (void)setDefaultPropertiesForLabel:(UILabel*)label;
+
 @end

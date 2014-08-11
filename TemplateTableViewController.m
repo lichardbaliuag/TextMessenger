@@ -31,14 +31,22 @@
 
 - (void)viewDidLoad
 {
+    [self.tabBarController.tabBar setHidden:NO];
     [super viewDidLoad];
     [self initializeTemplate];
-    
+
+
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self.tabBarController.tabBar setHidden:NO];
+
 }
 
 - (void)didReceiveMemoryWarning

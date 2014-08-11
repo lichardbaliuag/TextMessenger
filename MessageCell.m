@@ -7,12 +7,11 @@
 //
 
 #import "MessageCell.h"
+#import "MainController.h"
 
 @implementation MessageCell
 
-@synthesize recipientName, composeDate, sendDateCell, msgContentCell;
 
-/*
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -35,11 +34,8 @@
 }
 
 - (void)dealloc {
-    [_recipientName release];
-    [_composeDate release];
-    [_sendDateCell release];
-    [_msgContentCell release];
-    [super dealloc];
+
+    
 }
- */
+
 @end

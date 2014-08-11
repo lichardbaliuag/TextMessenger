@@ -26,11 +26,7 @@
 
 
 @property (nonatomic, strong) NSString *msgGUID;
-//@property (nonatomic, strong) NSString *resName;
-//@property (nonatomic, strong) NSString *msgContent1;
-
-//@property (nonatomic, strong) UserProfile *userProfile;
-@property (nonatomic, strong) UserMessages *userMessages;       // Entity
+@property (nonatomic, strong) UserMessages *userMessages;  // Entity
 
 -(void)CallOtherView;
 

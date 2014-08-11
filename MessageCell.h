@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface MessageCell : UITableViewCell
-@property (retain, nonatomic) IBOutlet UILabel *recipientName;
-@property (retain, nonatomic) IBOutlet UILabel *composeDate;
-@property (retain, nonatomic) IBOutlet UILabel *sendDateCell;
-@property (retain, nonatomic) IBOutlet UILabel *msgContentCell;
+@property (strong, nonatomic) IBOutlet UIImageView *imgRecipientImage;
+@property (strong, nonatomic) IBOutlet UILabel *labelSendToDate;
+@property (strong, nonatomic) IBOutlet UILabel *labelStatus;
+@property (strong, nonatomic) IBOutlet UILabel *labelRecipientName;
+@property (strong, nonatomic) IBOutlet UILabel *labelMessageDetails;
+
 
 @end
