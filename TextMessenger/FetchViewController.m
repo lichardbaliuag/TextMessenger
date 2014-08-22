@@ -89,17 +89,8 @@
     [super doneAndDismiss];
 }
 
-/*
+
 #pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"SendTemplate"])
@@ -107,18 +98,14 @@
         AddMessViewController *dv = (AddMessViewController *)segue.destinationViewController;
         dv.templateContent = self.templateContent;
         dv.templateID = self.templateID;
-        
         dv.isFromTemplate = @"1";
-        
     }
-    
 }
 
-- (IBAction)Send:(id)sender {
-    
-     //[self performSegueWithIdentifier:@"SendTemplate" sender:self];
+- (IBAction)Send:(id)sender
+{
     UIViewController *myController = [self.storyboard instantiateViewControllerWithIdentifier:@"SendTemplate"];
     [self.navigationController pushViewController: myController animated:YES];
-    
 }
+
 @end

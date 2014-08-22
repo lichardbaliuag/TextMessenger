@@ -10,7 +10,6 @@
 #import "AddMessViewController.h"
 #import "MainController.h"
 #import "JSTokenField.h"
-//#import "THChatInput.h"
 #import "UserMessages.h"
 #import "AppDelegate.h"
 #import "selectDateViewController.h"
@@ -77,16 +76,11 @@
     _personRecipient.returnKeyType = UIReturnKeyDefault;                                // Keyboard retun - DONE
     _personRecipient.backgroundColor = [UIColor clearColor];                            // Set clear background for textview
     _personRecipient.tintColor = [UIColor grayColor];                                   // Set cursor colr to gray
-    
-    //To make the border look very close to a UITextField
     [_personRecipient.layer setBorderColor:[[[UIColor grayColor] colorWithAlphaComponent:0.5] CGColor]];
     [_personRecipient.layer setBorderWidth:0.5];
-
-    //The rounded corner part, where you specify your view's corner radius:
     _personRecipient.layer.cornerRadius = 5;
     _personRecipient.clipsToBounds = YES;
     
-    //[_personRecipient setDelegate:self];                                              // * uses when using uitextview
     [self.view addSubview:_personRecipient];
     [_personRecipient becomeFirstResponder];                                          // Focus cursor in Recipient field
     
@@ -102,7 +96,6 @@
     [toLabel1 setText:@"To:"];
     [toLabel1 setTextColor:[UIColor grayColor]];
     [self.view addSubview:toLabel1];
-    //[toLabel1 release];
 
     /*
     // **** Create UIButton for Contact List ******* //
@@ -154,7 +147,6 @@
 
     // ********************************************* //
     */
-    
     // **** SEND DATE BUTTON FROM STORYBOARD ******* //
     // ********************************************* //
     [self.sendDate setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
@@ -203,7 +195,6 @@
     //[_chatInput.sendButton setBackgroundImage:[UIImage imageNamed:@"Chat_Send_Button.png"] forState:UIControlStateNormal];
     //[_chatInput.sendButton setBackgroundImage:[UIImage imageNamed:@"Chat_Send_Button_Pressed.png"] forState:UIControlStateHighlighted];
     //[_chatInput.sendButton setBackgroundImage:[UIImage imageNamed:@"Chat_Send_Button_Pressed.png"] forState:UIControlStateSelected];
-    
     
       _chatInput.backgroundColor = [UIColor clearColor];
       //_chatInput.inputBackgroundView.image = [[UIImage imageNamed:@"Chat_Footer_BG.png"] stretchableImageWithLeftCapWidth:80 topCapHeight:25];
@@ -340,13 +331,11 @@
 	[self presentViewController:getPersonContact animated:YES completion:nil];
 }
 
-// Dismiss view controller when people view contact list cancel
+#pragma mark - Selecting People from Contact List
 - (void)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-
-#pragma mark - Selecting People from Contact List
 
 - (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker
       shouldContinueAfterSelectingPerson:(ABRecordRef)person
@@ -354,59 +343,48 @@
                               identifier:(ABMultiValueIdentifier)identifier
 {
 	ABMultiValueRef phoneProperty = ABRecordCopyValue(person,property);
-	//NSString *phone = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(phoneProperty,identifier);
-    NSString *phone = (__bridge NSString *)ABMultiValueCopyValueAtIndex(phoneProperty, identifier);
+	NSString *phone = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(phoneProperty,identifier);
+    //NSString *phone = (__bridge NSString *)ABMultiValueCopyValueAtIndex(phoneProperty, identifier);
     
     _phoneTempVar = phone;
+    NSString *name = (__bridge_transfer NSString *)ABRecordCopyCompositeName(person);
     
-    //NSString *name = (__bridge NSString *)ABRecordCopyCompositeName(person);
-    NSString *name = (__bridge NSString *)ABRecordCopyCompositeName(person);
-    
-    //ABMutableMultiValueRef emails = ABRecordCopyValue(person, kABPersonEmailProperty);
-    //NSString *addresses = (__bridge_transfer NSString *)ABMultiValueCopyArrayOfAllValues(emails);
-    
-    //if (phoneProperty)
-    //{
-        CFRelease(phoneProperty);                                                   // Release phone properly
-        if (![_personRecipient.text isEqualToString:nil])                           // Check if NOT empty
-        {
-         // Reference: http://www.shaunmccarthy.com/2012/04/finding-the-cursor-position-in-a-uitextfield/
+    CFRelease(phoneProperty);                                                   // Release phone properly
+    //if (![_personRecipient.text isEqualToString:nil])                           // Check if NOT empty
+    if (property == kABPersonPhoneProperty)
+    {
+                // Reference: http://www.shaunmccarthy.com/2012/04/finding-the-cursor-position-in-a-uitextfield/
+                // Get the selected text range
             
-            // Get the selected text range
-            UITextRange *selectedRange = [_personRecipient selectedTextRange];
+        UITextRange *selectedRange = [_personRecipient selectedTextRange];
         
-            // Calculate the existing position, relative to the end of the field (will be a - number)
-            NSInteger pos = [_personRecipient offsetFromPosition:_personRecipient.endOfDocument toPosition:selectedRange.start];
+                // Calculate the existing position, relative to the end of the field (will be a - number)
+        NSInteger pos = [_personRecipient offsetFromPosition:_personRecipient.endOfDocument toPosition:selectedRange.start];
             
-            // Work out the position based by offsetting the end of the field to the same
-            // offset we had before editing
-            UITextPosition *newPos = [_personRecipient positionFromPosition:_personRecipient.endOfDocument offset:pos];
+                // Work out the position based by offsetting the end of the field to the same
+                // offset we had before editing
+        UITextPosition *newPos = [_personRecipient positionFromPosition:_personRecipient.endOfDocument offset:pos];
             
-            // Reselect the range, to move the cursor to that position
-            _personRecipient.selectedTextRange = [_personRecipient textRangeFromPosition:newPos toPosition:newPos];
-            
-            _personRecipient.text = [NSString stringWithFormat:@"%@ ", name];      // Passing Name- recipient field
-            //[_personRecipient.text stringByAppendingString:name];
-            
-            [self dismissViewControllerAnimated:YES completion:nil];                // Dismiss View Controller
-             NSLog(@"First: %@ %@ ", name, phone);
-            //[self getDate:self];                                                  // Call getDate function
+                // Reselect the range, to move the cursor to that position
+        _personRecipient.selectedTextRange = [_personRecipient textRangeFromPosition:newPos toPosition:newPos];
+        NSString *phoneNumberOnly = [[phone componentsSeparatedByCharactersInSet:
+                                    [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
         
+        _personRecipient.text = [NSString stringWithFormat:@"%@ ", name];      // Passing Name- recipient field
+        [self dismissViewControllerAnimated:YES completion:nil];                // Dismiss View Controller
             
-        }
-        else
-        //if (![_personRecipient.text isEqualToString:nil])                         // Check if empty
-        {
-            _personRecipient.text = [NSString stringWithFormat:@"%@, ", name];      // Passing Name- recipient field
-            [self dismissViewControllerAnimated:YES completion:nil];                // Dismiss View Controller
-            NSLog(@"Second: %@ %@ ", name, phone);
-        }
-    
-    //CFRelease(phoneProperty);
-    //return phone;
+        NSLog(@"First: %@ %@ ", name, phoneNumberOnly );
+    }
+    else
+    {
+        _personRecipient.text = [NSString stringWithFormat:@"%@, ", name];      // Passing Name- recipient field
+        [self dismissViewControllerAnimated:YES completion:nil];                // Dismiss View Controller
+        NSLog(@"Second: %@ %@ ", name, phone);
+    }
     return name;
 }
 
+ 
 - (void) insertString:(NSString *) insertingString intoTextView:(UITextView *) textView
 {
     NSRange range = _personRecipient.selectedRange;
@@ -424,7 +402,6 @@
 -(IBAction)getDate:(id)sender
 {
     [_personRecipient resignFirstResponder];        // Hide keyboard when selecting date
-    
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Select date" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Select", nil];
     UIView *dateView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 200)];
     dateView.backgroundColor = [UIColor clearColor];
@@ -437,7 +414,6 @@
     [dateView addSubview:pickDate];
     [av setValue:dateView forKey:@"accessoryView"]; // body of view
     [av show];                                      // to show the vie
-    
 }
 */
 
@@ -480,7 +456,6 @@
     {
         //[self adjustTextInputHeightForText:[NSString stringWithFormat:@"%@%@", _textView.text, text] animated:YES];
     } */
-    
     NSLog(@"textview in action");
     return YES;
 }
@@ -596,13 +571,9 @@
         
         NSUUID  *UUID = [NSUUID UUID];
         NSString* stringUUID = [UUID UUIDString];
-
         [myMO setValue:stringUUID forKey:@"messageGuid"];
-        
-        
-        //[myMO setValue:87651234 forKey:@"senderNumber"];
+
         NSLog(@"%@", stringUUID);
-        
         NSLog(@"Recipient No: %@", [NSNumber numberWithInteger:[strippedNumber integerValue]]);
         NSLog(@"Name: %@", _personRecipient.text);
         NSLog(@"Msg content: %@", _textViewMsgContent.text);

@@ -205,12 +205,12 @@
     UINavigationController *navigationController = (UINavigationController *)[tab selectedViewController];      // Inserted
 
     MainController *dv = nil;
-    //MainController *dv = [[MainController alloc]init];
     
+    //MainController *dv = [[MainController alloc]init];
     //dv = (MainController *)[[navigationController viewControllers] objectAtIndex:0];
     //dv = [[navigationController viewControllers]objectAtIndex:0];
-    dv = [[navigationController viewControllers] objectAtIndex:0];
     
+    dv = [[navigationController viewControllers] objectAtIndex:0];
     if ([notification.userInfo valueForKey:@"messagekey"] !=nil)
     {
         NSLog(@"This is notification window 1 and key %@", notification.userInfo);
@@ -218,6 +218,7 @@
         
         NSString *sample = [NSString stringWithFormat:@"%@", [notification.userInfo valueForKey:@"messagekey"]];
         //dv.notificationID = sample; //[notification.userInfo valueForKey:@"messagekey"];
+        
         dv.notificationID = sample;
         
     }

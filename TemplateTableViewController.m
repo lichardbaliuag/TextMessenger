@@ -8,11 +8,14 @@
 
 #import "TemplateTableViewController.h"
 #import "FetchViewController.h"
+#import "CustomLoader.h"
 
 @interface TemplateTableViewController ()
 {
     NSMutableArray *arrTemplate;
+    CustomLoader *loader;
     
+    dispatch_queue_t que;
 }
 
 
@@ -32,10 +35,31 @@
 - (void)viewDidLoad
 {
     [self.tabBarController.tabBar setHidden:NO];
+    
     [super viewDidLoad];
-    [self initializeTemplate];
+    
+    loader = [[CustomLoader alloc]init];
+    [loader InitializeLoader:self];
+    
+    UIRefreshControl *refresh = [[UIRefreshControl alloc] init];
+    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
+    [refresh addTarget:self action:@selector(initializeTemplate)forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refresh;
 
+    if (!que) {
+        que = dispatch_queue_create("sample_que", NULL);
+    }
+    dispatch_async(que, ^{
+        loader.label.text = @"Loading...";
+        [self.tableView addSubview:loader.xview];
+        [self.tableView addSubview:loader.spinner];
+        [self.tableView addSubview:loader.label];
+        [loader.spinner startAnimating];
+        [self initializeTemplate];
+        
+    });
 
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -67,50 +91,104 @@
     return arrTemplate.count;
 }
 
+- (void)stopRefresh
+{
+    
+    [self.tableView reloadData];
+    [self.refreshControl endRefreshing];
+    
+}
+
 -(void)initializeTemplate
 {
-    NSDictionary *dictionary;
     
-    arrTemplate = [[NSMutableArray alloc] init];
-    //CommonFunction *common = [[CommonFunction alloc]init];
-    //NSString *x = [common GetJsonConnection:@"GetHiritMessage2"];
-    NSString *result = nil;
-    result = [NSString stringWithFormat:@"http://service.bmcseatransport.com/Service1.svc/getdata"];
-    NSData *jsonSource = [NSData dataWithContentsOfURL:[NSURL URLWithString:result]];
     
-    id jsonObjects = [NSJSONSerialization JSONObjectWithData:
-                      jsonSource options:NSJSONReadingMutableContainers error:nil];
-    
-    for (NSDictionary *dataDict in jsonObjects) {
-
-        NSString *backroundImage = [dataDict objectForKey:@"BackroundImage"];
-        NSString *createdBy = [dataDict objectForKey:@"CreatedBy"];
-        NSString *dateCreated = [dataDict objectForKey:@"DateCreated"];
-        NSString *dateModified = [dataDict objectForKey:@"DateModified"];
-        NSString *modifiedBy = [dataDict objectForKey:@"ModifiedBy"];
-        NSString *templateContent = [dataDict objectForKey:@"TemplateContent"];
-        NSString *templateID = [dataDict objectForKey:@"TemplateID"];
-        NSString *templateTitle = [dataDict objectForKey:@"TemplateTitle"];
+//    [loader.spinner startAnimating];
+//    [self.tableView addSubview:loader.spinner];
+    dispatch_async(dispatch_get_main_queue(),^{
         
-        dictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                      backroundImage, @"BackroundImage",
-                      createdBy, @"CreatedBy",
-                      dateCreated, @"DateCreated",
-                      dateModified, @"DateModified",
-                      modifiedBy, @"ModifiedBy",
-                      templateContent, @"TemplateContent",
-                      templateID, @"TemplateID",
-                      templateTitle, @"TemplateTitle", nil];
+        NSDictionary *dictionary;
+        arrTemplate = [[NSMutableArray alloc] init];
+        //CommonFunction *common = [[CommonFunction alloc]init];
+        //NSString *x = [common GetJsonConnection:@"GetHiritMessage2"];
+        NSString *result = nil;
+        result = [NSString stringWithFormat:@"http://service.bmcseatransport.com/Service1.svc/getdata"];
+        NSData *jsonSource = [NSData dataWithContentsOfURL:[NSURL URLWithString:result]];
+        
+        if (jsonSource == nil)
+        {
+            [loader.spinner stopAnimating];
             
-        [arrTemplate addObject:dictionary];
+            for (UIView *subview in [self.view subviews]) {
+                // Only remove the subviews with tag not equal to 1
+                if (subview.tag == 1) {
+                    [subview removeFromSuperview];
+                }
+            }
+            
+            [self performSelector:@selector(stopRefresh) withObject:nil afterDelay:2.5];
+            
+            UIAlertView *disconnected = [[UIAlertView alloc]initWithTitle:@"Connection Error" message:@"Error downloading template" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            
+            [disconnected show];
+            return ;
+        }
         
-    }
+        id jsonObjects = [NSJSONSerialization JSONObjectWithData:
+                          jsonSource options:NSJSONReadingMutableContainers error:nil];
+        
+        for (NSDictionary *dataDict in jsonObjects) {
+            NSString *backroundImage = [dataDict objectForKey:@"BackroundImage"];
+            NSString *createdBy = [dataDict objectForKey:@"CreatedBy"];
+            NSString *dateCreated = [dataDict objectForKey:@"DateCreated"];
+            NSString *dateModified = [dataDict objectForKey:@"DateModified"];
+            NSString *modifiedBy = [dataDict objectForKey:@"ModifiedBy"];
+            NSString *templateContent = [dataDict objectForKey:@"TemplateContent"];
+            NSString *templateID = [dataDict objectForKey:@"TemplateID"];
+            NSString *templateTitle = [dataDict objectForKey:@"TemplateTitle"];
+            
+            dictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+                          backroundImage, @"BackroundImage",
+                          createdBy, @"CreatedBy",
+                          dateCreated, @"DateCreated",
+                          dateModified, @"DateModified",
+                          modifiedBy, @"ModifiedBy",
+                          templateContent, @"TemplateContent",
+                          templateID, @"TemplateID",
+                          templateTitle, @"TemplateTitle", nil];
+            [arrTemplate addObject:dictionary];
+            
+        }
+        
+        sleep(1);
+        
+        //self.navigationItem.title = @"Home";
+       // [UIApplication sharedApplication].networkActivityIndicatorVisible = false ;
+        
+        [loader.spinner stopAnimating];
+        
+        for (UIView *subview in [self.view subviews]) {
+            // Only remove the subviews with tag not equal to 1
+            if (subview.tag == 1) {
+                [subview removeFromSuperview];
+            }
+        }
+        
+        [self performSelector:@selector(stopRefresh) withObject:nil afterDelay:2.5];
+        
+        [self.tableView reloadData];
+        
+    });
+    
+    
 
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [self resignFirstResponder];
+
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     

@@ -124,6 +124,13 @@
     return [sectionInfo numberOfObjects];
 }
 
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    NSArray *sections = [[self fetchedResultsController] sections];
+    id<NSFetchedResultsSectionInfo> currentSection = [sections objectAtIndex:section];
+    return  [currentSection name];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
@@ -252,11 +259,9 @@
 
 - (NSFetchedResultsController *) fetchedResultsControllerByMessageID:(NSString *)messageGuid
 {
-    
     if (_fetchedResultsControllerByGuid != nil)
     {
         return _fetchedResultsControllerByGuid;
-        
     }
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
     self.managedObjectContext = [appDelegate managedObjectContext];
@@ -269,14 +274,14 @@
     [fetchRequest setFetchBatchSize:20];
     
     // To arrange according to recipient name
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]initWithKey:@"messageDateCreated" ascending:NO];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]initWithKey:@"messageDateCreated" ascending:NO]; // 1
     
     // To hold the sorted recipient name teporarily
     //NSArray *sortDescriptors = @[sortDescriptor];
     //NSArray *sortDescriptors = [[NSArray alloc]initWithObjects:sortDescriptor, nil];
     
     // To assign an array for the sort desriptors property
-    fetchRequest.sortDescriptors = [[NSArray alloc]initWithObjects:sortDescriptor, nil]; //sortDescriptors;
+    fetchRequest.sortDescriptors = [[NSArray alloc]initWithObjects:sortDescriptor, nil]; //sortDescriptors;       // 2
     
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"messageGuid CONTAINS %@", messageGuid];
     [fetchRequest setPredicate:pred];
@@ -295,14 +300,6 @@
     
     return _fetchedResultsControllerByGuid;
     
-}
-
--(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    NSArray *sections = [[self fetchedResultsController] sections];
-    
-    id<NSFetchedResultsSectionInfo> currentSection = [sections objectAtIndex:section];
-    return  [currentSection name];
 }
 
 

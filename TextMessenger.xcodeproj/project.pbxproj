@@ -70,6 +70,7 @@
 		2CD8C81C18D083800008FE6B /* Chat_Send_Button_Pressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2CD8C81018D083800008FE6B /* Chat_Send_Button_Pressed@2x.png */; };
 		2CD8C81D18D083800008FE6B /* Chat_Send_Button.png in Resources */ = {isa = PBXBuildFile; fileRef = 2CD8C81118D083800008FE6B /* Chat_Send_Button.png */; };
 		2CD8C82118D4321B0008FE6B /* Settings_Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2CD8C82018D4321B0008FE6B /* Settings_Icon@2x.png */; };
+		2CF65F2319A7AA5D0013753A /* CustomLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CF65F2219A7AA5D0013753A /* CustomLoader.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -163,6 +164,8 @@
 		2CD8C81018D083800008FE6B /* Chat_Send_Button_Pressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Chat_Send_Button_Pressed@2x.png"; path = "../Image/Chat_Send_Button_Pressed@2x.png"; sourceTree = "<group>"; };
 		2CD8C81118D083800008FE6B /* Chat_Send_Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Chat_Send_Button.png; path = ../Image/Chat_Send_Button.png; sourceTree = "<group>"; };
 		2CD8C82018D4321B0008FE6B /* Settings_Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Settings_Icon@2x.png"; sourceTree = "<group>"; };
+		2CF65F2119A7AA5D0013753A /* CustomLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomLoader.h; sourceTree = SOURCE_ROOT; };
+		2CF65F2219A7AA5D0013753A /* CustomLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomLoader.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -330,6 +333,8 @@
 		2C62A89A1989579100B39D96 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				2CF65F2119A7AA5D0013753A /* CustomLoader.h */,
+				2CF65F2219A7AA5D0013753A /* CustomLoader.m */,
 				2C62A89B198957B000B39D96 /* CommonCoreData.h */,
 				2C62A89C198957B000B39D96 /* CommonCoreData.m */,
 			);
@@ -436,6 +441,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CF65F2319A7AA5D0013753A /* CustomLoader.m in Sources */,
 				2C8644A518CF52D6005AA2B0 /* AddMessViewController.m in Sources */,
 				2CA56996191A0F3A006ED1BC /* Templates.m in Sources */,
 				2C296EC31661195300C9143C /* main.m in Sources */,

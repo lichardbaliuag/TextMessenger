@@ -43,8 +43,8 @@
     [dateFormatter setDateFormat:@"dd/MM/yyyy hh:mm a"];// here set format which you want...
     
     NSString *convertedString = [dateFormatter stringFromDate:self.userMessages.sendDate];
-    //NSLog(@"messageguid %@", self.userMessages.messageGuid);
     
+    //NSLog(@"messageguid %@", self.userMessages.messageGuid);
     //CGSize maximumLabelSize = CGSizeMake(300, FLT_MAX);
     //CGSize expectedLabelSize = [self.userMessages.messageContent sizeWithFont:self.contentLabel.font constrainedToSize:maximumLabelSize lineBreakMode:self.contentLabel.lineBreakMode];
     //CGRect labelNewFrame = self.contentLabel.frame;
@@ -52,6 +52,9 @@
     //self.msgContentDetails.text = expectedLabelSize.height;
     self.dateToSend.text = convertedString;
     self.status.text = [NSString stringWithFormat:@"%@", self.userMessages.messageStatusCode];
+    
+    //UILabel *customLabel = [UILabel alloc] initWithFrame:CGRectMake(<#CGFloat x#>, <#CGFloat y#>, <#CGFloat width#>, <#CGFloat height#>)
+    
     self.msgContentDetails.text = self.userMessages.messageContent;
 
 }
