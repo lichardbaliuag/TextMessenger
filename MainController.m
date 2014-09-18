@@ -8,19 +8,21 @@
 
 #import "MainController.h"
 #import "MessageContentViewController.h"
-//#import "Custom.h"
 #import "AddMessViewController.h"
 #import "AppDelegate.h"
 #import "MessageCell.h"
+#import "CommonStyle.h"
 
 
 @interface MainController ()
 {
-    NSArray *message;
+    //NSArray *message;
+    //NSArray *searchResults;
+    CommonStyle *commonstyle;
+    
 }
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
-//@property (strong) NSMutableArray *messages;
 
 @end
 
@@ -48,12 +50,11 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [self.tabBarController.tabBar setHidden:NO];
     
-    // Fetch the messages from persistent store
-    //NSManagedObjectContext *managedObjectContext = [self managedObjectContext];
-    //NSFetchRequest *fetchRequest = [[NSFetchRequest alloc]initWithEntityName:@"UserMessages"];
-    //self.messages = [[managedObjectContext executeFetchRequest:fetchRequest error:nil]mutableCopy];
-    //[self.tableView reloadData];
+    // Set UIView Background
+    //[self.view setBackgroundColor:[UIColor clearColor]];
+    
 }
 
 - (void)awakeFromNib
@@ -68,6 +69,7 @@
 - (void)viewDidLoad
 {
     
+    [self.tabBarController.tabBar setHidden:NO];
     if ([self.isFromNotification isEqualToString:@"1"]) {
         return;
     }
@@ -114,35 +116,97 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    //return 1; 
-    return [[self.fetchedResultsController sections]count];
+    return 1;
+    //return [[self.fetchedResultsController sections]count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    id<NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections]objectAtIndex:section];
-    return [sectionInfo numberOfObjects];
+    //return [[self.fetchedResultsController fetchedObjects] count];
+    
+    if (tableView == self.searchDisplayController.searchResultsTableView)
+    {
+        return [[self.fetchResultControllerSearch fetchedObjects] count];
+    } else
+    {
+        return [[self.fetchedResultsController fetchedObjects] count];
+    }
 }
 
--(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+
+- (void)filterContentForSearchText:(NSString *)searchText scope:(NSString *)scope
 {
-    NSArray *sections = [[self fetchedResultsController] sections];
-    id<NSFetchedResultsSectionInfo> currentSection = [sections objectAtIndex:section];
-    return  [currentSection name];
+//    NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"(recipientName LIKE [cd]%@) or recipientNumber LIKE[cd]%@ or messageContent LIKE[cd]%@", searchText];      //@"recipientName ,contains[c] %@
+    self.fetchResultControllerSearch = [self fetchedResultsControllerSearchReturn:searchText];
+}
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
+{
+    [self filterContentForSearchText:searchString scope:[[self.searchDisplayController.searchBar scopeButtonTitles]objectAtIndex:[self.searchDisplayController.searchBar selectedScopeButtonIndex]]];
+    
+    return YES;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    MessageCell *cell =(MessageCell *) [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-    UserMessages *msg = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    //MessageCell *cell =(MessageCell *) [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    MessageCell *cell =(MessageCell *) [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 
-    //cell.imgRecipientImage =
-    cell.labelSendToDate.text = @"15-Aug-2014 8:00PM";
+    // ************
+    
+    if (cell == nil)
+    {
+        //cell = (MessageCell *) [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"CustomCellMessageDetails" owner:self options:nil];
+        cell = (MessageCell *) [nib objectAtIndex:0];
+    }
+    
+    
+    
+    UserMessages *msg;// = [self.fetchedResultsController objectAtIndexPath:indexPath];
+
+
+    
+    if (tableView == self.searchDisplayController.searchResultsTableView)
+    {
+        msg = [self.fetchResultControllerSearch objectAtIndexPath:indexPath];
+    }
+    else
+    {
+        msg = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    }
+    
+    
+    
+    // ************
+    
+        NSDateFormatter *dateFormatter;
+    dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd/MM/yyyy hh:mm a"];// here set format which you want...
+    NSString *convertedString = [dateFormatter stringFromDate:msg.sendDate];
+    cell.labelSendToDate.text = convertedString;
     cell.labelStatus.text = @"Sent";
+    
+    //NSString *msgCode = [[msg objectForKey:@"messageStatusCode"] stringValue];
+    //cell.labelStatus.text = msg.messageStatusCode;
     cell.labelRecipientName.text = msg.recipientName;
     cell.labelMessageDetails.text = msg.messageContent;
+    //[cell.labelMessageDetails sizeToFit];
+    
+    [CommonStyle setMyImageImageProfileStyle:cell.imgRecipientImage];
+
+    
+    
+    
+    //cell.imgRecipientImage.image =
+    
+    
+    
+    
+    
+    
+    
     
     return cell;
 
@@ -166,7 +230,21 @@
         {
             
             NSIndexPath *path = [self.tableView indexPathForSelectedRow];
-            UserMessages *msg = [self.fetchedResultsController objectAtIndexPath:path];
+            UserMessages *msg ;//= [self.fetchedResultsController objectAtIndexPath:path];
+            if ([self.searchDisplayController isActive])
+            {
+                path = [self.searchDisplayController.searchResultsTableView indexPathForSelectedRow];
+                msg = [self.fetchResultControllerSearch objectAtIndexPath:path];
+
+            }
+            else
+            {
+                msg = [self.fetchedResultsController objectAtIndexPath:path];
+
+            }
+
+            
+            //UserMessages *msg = [self.fetchedResultsController objectAtIndexPath:path];
             MessageContentViewController *mcvc = segue.destinationViewController;
             mcvc.userMessages = msg;
             
@@ -240,7 +318,7 @@
     // To assign an array for the sort desriptors property
     fetchRequest.sortDescriptors = [[NSArray alloc]initWithObjects:sortDescriptor, nil]; //sortDescriptors;
     
-    _fetchedResultsController = [[NSFetchedResultsController alloc]initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:@"messageDateCreated" cacheName:nil];
+    _fetchedResultsController = [[NSFetchedResultsController alloc]initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
     
     self.fetchedResultsController = _fetchedResultsController;
     _fetchedResultsController.delegate = self;
@@ -301,6 +379,53 @@
     return _fetchedResultsControllerByGuid;
     
 }
+
+
+- (NSFetchedResultsController *) fetchedResultsControllerSearchReturn:(NSString *)SearchText
+{
+//    if (_fetchedResultsControllerByGuid != nil)
+//    {
+//        return _fetchedResultsControllerByGuid;
+//    }
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+    self.managedObjectContext = [appDelegate managedObjectContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc]init];
+    
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"UserMessages" inManagedObjectContext:self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    // Set batch size to load only minimal data required.
+    [fetchRequest setFetchBatchSize:20];
+    
+    // To arrange according to recipient name
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]initWithKey:@"messageDateCreated" ascending:NO]; // 1
+    
+    // To hold the sorted recipient name teporarily
+    //NSArray *sortDescriptors = @[sortDescriptor];
+    //NSArray *sortDescriptors = [[NSArray alloc]initWithObjects:sortDescriptor, nil];
+    
+    // To assign an array for the sort desriptors property
+    fetchRequest.sortDescriptors = [[NSArray alloc]initWithObjects:sortDescriptor, nil]; //sortDescriptors;       // 2
+    
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"ANY recipientName CONTAINS[c] %@", SearchText];
+    [fetchRequest setPredicate:pred];
+    
+    _fetchedResultsControllerByGuid = [[NSFetchedResultsController alloc]initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+    
+    self.fetchedResultsControllerByGuid = _fetchedResultsControllerByGuid;
+    _fetchedResultsControllerByGuid.delegate = self;
+    
+    NSError *error = nil;
+	if (![self.fetchedResultsControllerByGuid performFetch:&error])
+    {
+	    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+	    abort();
+	}
+    
+    return _fetchedResultsControllerByGuid;
+    
+}
+
 
 
 #pragma mark - Fetched Results Controller Delegates
@@ -376,5 +501,8 @@
     
 }
 
-
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 80;
+}
 @end

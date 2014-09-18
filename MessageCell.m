@@ -8,6 +8,8 @@
 
 #import "MessageCell.h"
 #import "MainController.h"
+#import <QuartzCore/QuartzCore.h>
+
 
 @implementation MessageCell
 

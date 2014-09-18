@@ -3,22 +3,15 @@
 //  Copyright (c) 2012 Me and Myself. All rights reserved.
 //
 
-
 #import "THChatInput.h"
 
 
 @implementation THChatInput
 
-
-
-
-//@synthesize textView = _textView;
-
 - (void) composeView {
    
+    // Background View
    CGSize size = self.frame.size;
-    
-   // Input
 	_inputBackgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
 	_inputBackgroundView.autoresizingMask = UIViewAutoresizingNone;
    _inputBackgroundView.contentMode = UIViewContentModeScaleToFill;
@@ -27,22 +20,15 @@
    _inputBackgroundView.backgroundColor = [UIColor clearColor];
    //_inputBackgroundView.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:.5];
 	[self addSubview:_inputBackgroundView];
-   //[_inputBackgroundView release];
    
 	// -- TextView -- //
     //_textView = [[UITextView alloc] initWithFrame:CGRectMake(70.0f, 0, 185, 0)];
-    _textView = [[UITextView alloc] initWithFrame:CGRectMake(38.0f, 0, 210, 30)];        // 20.0f, 0, 185, 0 (X, Y, W, H)
-    //_textView.text = @"aaaaabbbbb";
-    
-    //To make the border look very close to a UITextField
+    _textView = [[UITextView alloc] initWithFrame:CGRectMake(33.0f, 0, 220, 30)];        // 38.0f, 0, 185, 0 (X, Y, W, H)
     [_textView.layer setBorderColor:[[[UIColor grayColor] colorWithAlphaComponent:0.5] CGColor]];
     [_textView.layer setBorderWidth:0.5];
-    
-    //The rounded corner part, where you specify your view's corner radius:
     _textView.layer.cornerRadius = 5;
     _textView.clipsToBounds = YES;
-    
-    _textView.backgroundColor = [UIColor clearColor];                                   // Textview clear background
+    _textView.backgroundColor = [UIColor whiteColor];                                   // Textview clear background
    //_textView.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:.3];       // red background
    //_textView.contentInset = UIEdgeInsetsMake(-4, -2, -4, 0);
     _textView.delegate = self;
@@ -50,7 +36,7 @@
     _textView.showsHorizontalScrollIndicator = NO;
 	_textView.font = [UIFont systemFontOfSize:15.0f];
     _textView.autocorrectionType = UITextAutocorrectionTypeNo;
-    _textView.tintColor = [UIColor redColor];                                          // Set cursor color to gray
+    _textView.tintColor = [UIColor orangeColor];                                          // Set cursor color to gray
     [self addSubview:_textView];
     //[_textView release];
     [self adjustTextInputHeightForText:@"" animated:NO];
@@ -71,7 +57,7 @@
 	_sendButton.frame = CGRectMake(size.width - 65.0f, 14.0f, 58.0f, 30.0f);            // 64.0f, 12.0f, 58.0f, 27.0f
 	_sendButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;                 // Send button misalign here
     [_sendButton setTitle:@"Send" forState:UIControlStateNormal];                       // UIControlStateHighlighted
-    [_sendButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [_sendButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     //[_sendButton setTitleColor:[UIColor colorWithWhite:1.0f alpha:0.4f] forState:UIControlStateNormal];
     
     _sendButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:15];
@@ -82,19 +68,16 @@
 
     //[_sendButton setTitleShadowColor:[UIColor colorWithRed:0.325f green:0.463f blue:0.675f alpha:1.0f] forState:UIControlStateNormal];
     [_sendButton addTarget:self action:@selector(sendButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    
 	[self addSubview:_sendButton];
-    //[_sendButton release];
     
 /*
 	// Attach buttons
-	_attachButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+	_attachButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	_attachButton.frame = CGRectMake(6.0f, 12.0f, 26.0f, 27.0f);
 	_attachButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
    [_attachButton addTarget:self action:@selector(showAttachInput:) forControlEvents:UIControlEventTouchUpInside];
 	[self addSubview:_attachButton];
-   [_attachButton release];
-	
+
     // Emoji Button
 	_emojiButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
 	_emojiButton.frame = CGRectMake(12.0f + _attachButton.frame.size.width, 12.0f, 26.0f, 27.0f);
@@ -117,7 +100,7 @@
    {
       [UIView animateWithDuration:.50f animations:^{        //.35f
          CGRect r = self.frame;
-         r.origin.y -= 216;
+         r.origin.y -= 216;                                 // 216 - distance from keyboard
          [self setFrame:r];
       }];
       [self fitText];
@@ -134,7 +117,7 @@
    {
       [UIView animateWithDuration:.35f animations:^{
          CGRect r = self.frame;
-         r.origin.y += 216;
+         r.origin.y += 216;                                 // 216 - distance from keyboard
          [self setFrame:r];
       }];
       
@@ -214,6 +197,8 @@
     
     NSInteger h2 = [text sizeWithFont:_textView.font constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping].height;
     //NSInteger h2 = [text boundingRectWithSize:size options:NSLineBreakByWordWrapping attributes:nil context:nil].size.height;
+
+    
     
     
     [UIView animateWithDuration:(animated ? .1f : 0) animations:^
@@ -273,11 +258,11 @@
     [self fitText];
 }
 
-- (void) stringReciever:(NSString*)msgString
-{
-    _textView.text = msgString;
-
-}
+//- (void) stringReciever:(NSString*)msgString
+//{
+//    _textView.text = msgString;
+//
+//}
 
 
 @end

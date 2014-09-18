@@ -8,7 +8,6 @@
 
 #import "AppDelegate.h"
 #import "MainController.h"
-//#import "MessageContentViewController.h"
 #import "CommonCoreData.h"
 
 @implementation AppDelegate
@@ -19,6 +18,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    //[self.window setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"OldPaper_small.png"]]];
+    
+    
     UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
     UINavigationController *navigationController = (UINavigationController *)[[tabBarController viewControllers] objectAtIndex:0];
     MainController  *controller = (MainController *)[[navigationController viewControllers] objectAtIndex:0];
@@ -40,19 +43,10 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-    
-    
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(sendDate >= %@)", [NSDate dateWithTimeIntervalSinceNow:1]];
     
-    //[request setPredicate:predicate];
-    
-    //NSError *error;
-    
-    NSArray *dataArray = [[NSArray alloc]init];
-    
-    dataArray = [CommonCoreData GetUserMessages:predicate];//[context executeFetchRequest:request error:&error];
+    NSArray *dataArray;
+    dataArray = [CommonCoreData GetUserMessages:predicate];
     
     for (NSManagedObject *ma in dataArray)
     {

@@ -8,19 +8,20 @@
 
 #import <UIKit/UIKit.h>
 #import "ControlViewController.h"
+//#import "selectDateViewController.h"
+//#import "datePickerViewController.h"
 
-@interface FetchViewController : ControlViewController
+
+
+@interface FetchViewController : UIViewController //ControlViewController //<DatePickerDelegate>
 
 @property (nonatomic, strong) NSString *templateID;
 @property (nonatomic, strong) NSString *templateContent;
-
-@property (strong, nonatomic) IBOutlet UILabel *lblContent;
-
-- (IBAction)Send:(id)sender;
-- (IBAction)doneButton:(id)sender;
-//- (IBAction)fetchGreeting;
-//- (IBAction)cancelButton:(id)sender;
-
+@property (nonatomic, strong) IBOutlet UILabel *lblContent;
+@property (nonatomic, strong) IBOutlet UITextView *messageDetail;
+@property (nonatomic, strong) NSDate *sendDate;
+@property (nonatomic, strong) NSString *selectedContact;
+- (IBAction)shareTemplate:(id)sender;
 
 
 @end

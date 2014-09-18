@@ -9,12 +9,17 @@
 #import "TemplateTableViewController.h"
 #import "FetchViewController.h"
 #import "CustomLoader.h"
+#import "CommonStyle.h"
+#import "CommonURLFetch.h"
+
+
 
 @interface TemplateTableViewController ()
 {
     NSMutableArray *arrTemplate;
+    NSArray *arrTemplateSearch;
     CustomLoader *loader;
-    
+    CommonURLFetch *fetchTemplate;
     dispatch_queue_t que;
 }
 
@@ -35,8 +40,12 @@
 - (void)viewDidLoad
 {
     [self.tabBarController.tabBar setHidden:NO];
+    fetchTemplate = [[CommonURLFetch alloc]init];
+    
+    
     
     [super viewDidLoad];
+    
     
     loader = [[CustomLoader alloc]init];
     [loader InitializeLoader:self];
@@ -46,15 +55,20 @@
     [refresh addTarget:self action:@selector(initializeTemplate)forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refresh;
 
+    loader.label.text = @"Loading...";
+    [self.tableView addSubview:loader.xview];
+    [self.tableView addSubview:loader.spinner];
+    [self.tableView addSubview:loader.label];
+    [loader.spinner startAnimating];
+    
     if (!que) {
         que = dispatch_queue_create("sample_que", NULL);
     }
+    
     dispatch_async(que, ^{
-        loader.label.text = @"Loading...";
-        [self.tableView addSubview:loader.xview];
-        [self.tableView addSubview:loader.spinner];
-        [self.tableView addSubview:loader.label];
-        [loader.spinner startAnimating];
+
+        
+
         [self initializeTemplate];
         
     });
@@ -88,95 +102,115 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return arrTemplate.count;
+   // return arrTemplate.count;
+    if (tableView == self.searchDisplayController.searchResultsTableView)
+    {
+        return [arrTemplateSearch count];
+        
+    } else {
+        
+        return [arrTemplate count];
+    }
+
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+//    NSDictionary *tmpDict = [[NSDictionary alloc]init];
+//    
+//    if (tableView == self.searchDisplayController.searchResultsTableView)
+//    {
+//        tmpDict = [arrTemplateSearch objectAtIndex:indexPath.row];
+//
+//    }
+//    else
+//    {
+//        tmpDict = [arrTemplate objectAtIndex:indexPath.row];
+//    }
+//    
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        [self performSegueWithIdentifier: @"templateDetail" sender: self];
+    }
+    
+    //[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    
+    
+    
+    
 }
 
 - (void)stopRefresh
 {
     
-    [self.tableView reloadData];
+    //[self.tableView reloadData];
     [self.refreshControl endRefreshing];
     
 }
 
 -(void)initializeTemplate
 {
-    
-    
 //    [loader.spinner startAnimating];
 //    [self.tableView addSubview:loader.spinner];
+    
+    
+    
+    
     dispatch_async(dispatch_get_main_queue(),^{
         
-        NSDictionary *dictionary;
+       // NSDictionary *dictionary;
         arrTemplate = [[NSMutableArray alloc] init];
-        //CommonFunction *common = [[CommonFunction alloc]init];
-        //NSString *x = [common GetJsonConnection:@"GetHiritMessage2"];
-        NSString *result = nil;
-        result = [NSString stringWithFormat:@"http://service.bmcseatransport.com/Service1.svc/getdata"];
-        NSData *jsonSource = [NSData dataWithContentsOfURL:[NSURL URLWithString:result]];
         
-        if (jsonSource == nil)
-        {
-            [loader.spinner stopAnimating];
+        [fetchTemplate getGreetifyTemplate:^(NSMutableArray *array, NSError *error) {
             
-            for (UIView *subview in [self.view subviews]) {
-                // Only remove the subviews with tag not equal to 1
-                if (subview.tag == 1) {
-                    [subview removeFromSuperview];
+            if (error != nil) {
+                
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"Network connectivity or server not available" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                
+                [loader.spinner stopAnimating];
+                [self performSelector:@selector(stopRefresh) withObject:nil afterDelay:2.5];
+                
+                for (UIView *subview in [self.view subviews]) {
+                    // Only remove the subviews with tag not equal to 1
+                    if (subview.tag == 1) {
+                        [subview removeFromSuperview];
+                    }
+                }
+                
+                [alert show];
+            }
+            else
+            {
+                arrTemplate = array;
+                
+                [self.tableView reloadData];
+                
+                sleep(1);
+                
+                
+                [loader.spinner stopAnimating];
+                [self performSelector:@selector(stopRefresh) withObject:nil afterDelay:2.5];
+                
+                for (UIView *subview in [self.view subviews]) {
+                    // Only remove the subviews with tag not equal to 1
+                    if (subview.tag == 1) {
+                        [subview removeFromSuperview];
+                    }
                 }
             }
             
-            [self performSelector:@selector(stopRefresh) withObject:nil afterDelay:2.5];
             
-            UIAlertView *disconnected = [[UIAlertView alloc]initWithTitle:@"Connection Error" message:@"Error downloading template" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             
-            [disconnected show];
-            return ;
-        }
-        
-        id jsonObjects = [NSJSONSerialization JSONObjectWithData:
-                          jsonSource options:NSJSONReadingMutableContainers error:nil];
-        
-        for (NSDictionary *dataDict in jsonObjects) {
-            NSString *backroundImage = [dataDict objectForKey:@"BackroundImage"];
-            NSString *createdBy = [dataDict objectForKey:@"CreatedBy"];
-            NSString *dateCreated = [dataDict objectForKey:@"DateCreated"];
-            NSString *dateModified = [dataDict objectForKey:@"DateModified"];
-            NSString *modifiedBy = [dataDict objectForKey:@"ModifiedBy"];
-            NSString *templateContent = [dataDict objectForKey:@"TemplateContent"];
-            NSString *templateID = [dataDict objectForKey:@"TemplateID"];
-            NSString *templateTitle = [dataDict objectForKey:@"TemplateTitle"];
             
-            dictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                          backroundImage, @"BackroundImage",
-                          createdBy, @"CreatedBy",
-                          dateCreated, @"DateCreated",
-                          dateModified, @"DateModified",
-                          modifiedBy, @"ModifiedBy",
-                          templateContent, @"TemplateContent",
-                          templateID, @"TemplateID",
-                          templateTitle, @"TemplateTitle", nil];
-            [arrTemplate addObject:dictionary];
-            
-        }
+
+        }];
         
-        sleep(1);
         
-        //self.navigationItem.title = @"Home";
-       // [UIApplication sharedApplication].networkActivityIndicatorVisible = false ;
+        //[self.tableView reloadData];
         
-        [loader.spinner stopAnimating];
         
-        for (UIView *subview in [self.view subviews]) {
-            // Only remove the subviews with tag not equal to 1
-            if (subview.tag == 1) {
-                [subview removeFromSuperview];
-            }
-        }
         
-        [self performSelector:@selector(stopRefresh) withObject:nil afterDelay:2.5];
-        
-        [self.tableView reloadData];
+        //[self.tableView reloadData];
         
     });
     
@@ -200,8 +234,15 @@
 
     // NSLog(@"numberOfRowsInSection %lu",(unsigned long)[[myObject filteredArrayUsingPredicate:resultPredicate] count]);
     //tmpDict =  [[arrTemplate filteredArrayUsingPredicate:resultPredicate] objectAtIndex:indexPath.row ] ;
-    tmpDict = [arrTemplate objectAtIndex:indexPath.row];
-
+    
+    if (tableView == self.searchDisplayController.searchResultsTableView)
+    {
+    
+        tmpDict = [arrTemplateSearch objectAtIndex:indexPath.row];
+    } else
+    {
+        tmpDict = [arrTemplate objectAtIndex:indexPath.row];
+    }
     cell.textLabel.text = [tmpDict objectForKey:@"TemplateTitle"];
     cell.detailTextLabel.text = [tmpDict objectForKey:@"TemplateContent"];
 
@@ -212,18 +253,62 @@
 {
     if ([segue.identifier isEqualToString:@"templateDetail"])
     {
+        NSIndexPath *path; // = [self.tableView indexPathForSelectedRow];
         
-        NSIndexPath *path = [self.tableView indexPathForSelectedRow];
         FetchViewController *dv = segue.destinationViewController;
-        NSDictionary *tmpDict = nil;
+       // path = [self.searchDisplayController.searchResultsTableView indexPathForSelectedRow];
+               NSDictionary *tmpDict = nil;
         
-        tmpDict = [arrTemplate objectAtIndex:path.row ];
+        if ([self.searchDisplayController isActive]) {
+            path = [self.searchDisplayController.searchResultsTableView indexPathForSelectedRow];
+            tmpDict = [arrTemplateSearch objectAtIndex:path.row ];
+        }
+        else
+        {
+            path = [self.tableView indexPathForSelectedRow];
+
+            tmpDict = [arrTemplate objectAtIndex:path.row ];
+        }
         
         dv.templateContent = [tmpDict objectForKey:@"TemplateContent"];
         dv.templateID = [tmpDict objectForKey:@"TemplateID"];
+        
+        
     }
     
 }
+
+
+ #pragma mark -  Search Filter
+
+- (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope
+{
+    arrTemplateSearch = [[NSArray alloc]init];
+    NSString *nameFilter = [NSString stringWithFormat:@"%@*", searchText];
+   // NSString *desFilter = [NSString stringWithFormat:@"*%@*", searchText];
+    
+    NSPredicate *resultPredicate = [NSPredicate
+                                    predicateWithFormat:@"(TemplateContent LIKE [cd]%@)",
+                                    nameFilter];
+    
+    arrTemplateSearch = [arrTemplate filteredArrayUsingPredicate:resultPredicate];
+    
+    
+ 
+}
+
+-(BOOL)searchDisplayController:(UISearchDisplayController *)controller
+shouldReloadTableForSearchString:(NSString *)searchString
+{
+    [self filterContentForSearchText:searchString
+                               scope:[[self.searchDisplayController.searchBar scopeButtonTitles]
+                                      objectAtIndex:[self.searchDisplayController.searchBar
+                                                     selectedScopeButtonIndex]]];
+    
+    return YES;
+}
+
+
 
 
 /*

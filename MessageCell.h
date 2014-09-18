@@ -15,5 +15,4 @@
 @property (strong, nonatomic) IBOutlet UILabel *labelRecipientName;
 @property (strong, nonatomic) IBOutlet UILabel *labelMessageDetails;
 
-
 @end

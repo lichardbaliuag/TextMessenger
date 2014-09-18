@@ -10,22 +10,17 @@
 #import "UserMessages.h"
 @interface MessageContentViewController : UIViewController
 
-//@property int characterNumber;
-//@property(nonatomic, strong) NSString *characterName;
-
 @property (nonatomic, strong) IBOutlet UITextView *messageContent;
-@property (strong, nonatomic) id detailItem;
+@property (nonatomic, strong) id detailItem;
 @property (nonatomic, strong) UserMessages *userMessages;
-
-
-
 @property (nonatomic, strong) NSString *messageGuid;
-@property (strong, nonatomic) IBOutlet UILabel *msgContentDetails;
-@property (strong, nonatomic) IBOutlet UILabel *dateToSend;
-@property (strong, nonatomic) IBOutlet UILabel *status;
-@property (strong, nonatomic) IBOutlet UILabel *contentLabel;
-//@property (strong, nonatomic) IBOutlet UILabel *msgContent1;
+//@property (nonatomic, strong) IBOutlet UILabel *msgContentDetails;
+@property (nonatomic, strong) IBOutlet UILabel *dateToSend;
+@property (nonatomic, strong) IBOutlet UILabel *status;
+@property (nonatomic, strong) IBOutlet UILabel *contentLabel;
+@property (strong, nonatomic) IBOutlet UITextView *messageDetail;
 
 - (void)setDefaultPropertiesForLabel:(UILabel*)label;
+@property (strong, nonatomic) IBOutlet UIImageView *imgbackground;
 
 @end

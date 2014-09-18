@@ -4,7 +4,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <CoreData/CoreData.h>
+//#import <CoreData/CoreData.h>
 
 @interface THChatInput : UIView <UITextViewDelegate>
 {
@@ -27,7 +27,7 @@
 
 - (void) fitText;
 - (void) setText:(NSString*)text;
-- (void) stringReciever:(NSString*)msgString;       // To handle message from textview
+//- (void) stringReciever:(NSString*)msgString;       // To handle message from textview
 
 
 

@@ -2,22 +2,18 @@
 //  SettingsTableViewController.m
 //  TextMessenger
 //
-//  Created by Lichard Baliuag on 21/4/14.
+//  Created by Lichard Baliuag on 16/9/14.
 //  Copyright (c) 2014 Lichard Baliuag. All rights reserved.
 //
 
 #import "SettingsTableViewController.h"
-#import "AboutViewController.h"
-#import "ProfileViewController.h"
-
+#import "CommonStyle.h"
 
 @interface SettingsTableViewController ()
 
 @end
 
 @implementation SettingsTableViewController
-
-@synthesize settingsArray;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -32,15 +28,15 @@
 {
     [super viewDidLoad];
     
-    self.settingsArray = [NSArray arrayWithObjects:@"About", @"Tell a Friend", @"Profile", @"Account", @"Settings", @"Notification", @"Network Status", @"System Status", @"Clear All Messages", nil];
-    
-    
-    
+    self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:cWR green:cGN blue:cBL alpha:cAL];
+
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    [CommonStyle setProfileImage:self.imgProfile];
 }
 
 - (void)didReceiveMemoryWarning
@@ -53,60 +49,44 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.settingsArray.count;
+    return 5;
 }
 
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+//    @property (strong, nonatomic) IBOutlet UITableViewCell *cellImage;
+//    @property (strong, nonatomic) IBOutlet UITableViewCell *cellGray;
+//    @property (strong, nonatomic) IBOutlet UITableViewCell *cellAccount;
+//    @property (strong, nonatomic) IBOutlet UITableViewCell *cellNotification;
+    if (      [cell isEqual:self.cellImage]
+           || [cell isEqual:self.cellGray]
+        || [cell isEqual:self.cellAccount]
+        || [cell isEqual:self.cellNotification])
+    {
+       // return;
+        [cell setSelectionStyle:UITableViewCellSeparatorStyleSingleLine ];
 
+        
+    }
+    
+    
+}
+
+/*
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
     
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-
-    // Configure the cell.
-    //[self performSegueWithIdentifier:@"AboutViewController" sender:self];
+    // Configure the cell...
     
-    cell.textLabel.text = [self.settingsArray objectAtIndex:indexPath.row];
     return cell;
 }
-
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    switch (indexPath.row) {
-        case 0:[self performSegueWithIdentifier:@"AboutViewController" sender:self];
-            break;
-        case 1:[self performSegueWithIdentifier:@"ProfileViewController" sender:self];
-            break;
-        default:
-            break;
-    }
-}
-
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([[segue identifier] isEqualToString:@"AboutViewController"]) {
-        //AboutViewController *about = [segue destinationViewController];
-        
-    }
-    
-    if ([[segue identifier] isEqualToString:@"TellAFriendViewController"])  {
-        
-    }
-    
-    
-}
+*/
 
 /*
 // Override to support conditional editing of the table view.
@@ -146,7 +126,15 @@
 }
 */
 
+/*
+#pragma mark - Navigation
 
-
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
 
 @end

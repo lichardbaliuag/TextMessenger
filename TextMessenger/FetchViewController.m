@@ -8,7 +8,7 @@
 
 #import "FetchViewController.h"
 #import "AddMessViewController.h"
-
+#import "datePickerViewController.h"
 
 #define cWR 24/255.0f
 #define cGN 177/255.0f
@@ -16,11 +16,28 @@
 #define cAL 1.0f
 
 @interface FetchViewController ()
+{
+    //datePickerViewController *datepicker;
+}
 
 @end
 
 
 @implementation FetchViewController
+
+//@synthesize popoverController;
+
+-(void)getSelectedDate:(NSDate *)date
+{
+    self.sendDate = date;
+    NSLog(@"my selected date %@", date);
+    [self sendMessageNow:date contact:self.selectedContact];
+}
+
+-(void)sendMessageNow : (NSDate *)selectedDate  contact:(NSString *)selectedContact
+{
+    //send program here
+}
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -35,8 +52,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    //datepicker= [[datePickerViewController alloc]init];
+    
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:cWR green:cGN blue:cBL alpha:cAL];
+    
     self.lblContent.text = self.templateContent;
+    self.messageDetail.text = self.templateContent;
     
     [self.tabBarController.tabBar setHidden:YES];
 }
@@ -44,68 +66,26 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
-/*
-- (IBAction)fetchGreeting
-{
-    //NSString *txt = @"55";
-    //NSString *txt = self.txtId.text;
-    //NSString *url = [NSString stringWithFormat:@"http://www.itzodiac.com/testjson/RestServiceImpl.svc/json/%@",txt];
-    NSURL *url = [NSURL URLWithString:@"http://rest-service.guides.spring.io/greeting"];
-    //NSURL *url = [NSURL URLWithString:@"http://www.itzodiac.com/testjson/RestServiceImpl.svc/GetTemplate"];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    
-    //NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
-    [NSURLConnection sendAsynchronousRequest:request
-                                       queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *response,
-                                              NSData *data,
-                                              NSError *connectionError)
-     {
-          if (data.length > 0 && connectionError == nil)
-         {
-             NSDictionary *greeting = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
-             //self.greetingId.text = [[greeting objectForKey:@"id"] stringValue];
-             //self.greetingContent.text = [greeting objectForKey:@"content"];
-             
-             //self.greetingContent.text = [greeting objectForKey:@"JSONDataResult"];
-             
-             self.greetingId.text = [[greeting objectForKey:@"id"] stringValue];
-             self.greetingContent.text = [greeting objectForKey:@"content"];
-         }
-    }];
-}
-- (IBAction)cancelButton:(id)sender
-{
-
-    [super cancelAndDismiss];
-}
-*/
-
-- (IBAction)doneButton:(id)sender {
-    
-    [super doneAndDismiss];
-}
 
 
 #pragma mark - Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([segue.identifier isEqualToString:@"SendTemplate"])
+    if ([segue.identifier isEqualToString:@"ShareTemplate"])
     {
-        AddMessViewController *dv = (AddMessViewController *)segue.destinationViewController;
-        dv.templateContent = self.templateContent;
-        dv.templateID = self.templateID;
-        dv.isFromTemplate = @"1";
+        //datePickerViewController *dv;// = (datePickerViewController *)segue.destinationViewController;
+        
+        //[dv callPhoneBook];
+//        dv.templateContent = self.templateContent;
+//        dv.templateID = self.templateID;
+//        dv.isFromTemplate = @"1";
     }
 }
 
-- (IBAction)Send:(id)sender
+- (IBAction)shareTemplate:(id)sender
 {
-    UIViewController *myController = [self.storyboard instantiateViewControllerWithIdentifier:@"SendTemplate"];
-    [self.navigationController pushViewController: myController animated:YES];
+    [self performSegueWithIdentifier:@"ShareTemplate" sender:self];
 }
-
 @end

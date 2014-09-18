@@ -13,12 +13,12 @@
 
 
 @interface MainController : UITableViewController <UINavigationControllerDelegate, NSFetchedResultsControllerDelegate>
-{
-    //NSMutableArray *myArray;
-}
-@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
-@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsControllerByGuid;
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+
+@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsControllerByGuid;
+@property (nonatomic, strong) NSFetchedResultsController *fetchResultControllerSearch;
+
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 
 @property (nonatomic, strong) NSString *isFromNotification;
 @property (nonatomic, strong) NSString *notificationID;
@@ -26,7 +26,9 @@
 
 
 @property (nonatomic, strong) NSString *msgGUID;
-@property (nonatomic, strong) UserMessages *userMessages;  // Entity
+@property (nonatomic, strong) UserMessages *userMessages;               // Entity
+@property (nonatomic, strong) IBOutlet UISearchBar *searchBarInMain;
+@property (nonatomic, strong) IBOutlet UISearchDisplayController *displaySearch;
 
 -(void)CallOtherView;
 

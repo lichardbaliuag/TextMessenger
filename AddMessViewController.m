@@ -13,6 +13,8 @@
 #import "UserMessages.h"
 #import "AppDelegate.h"
 #import "selectDateViewController.h"
+#import "CommonStyle.h"
+
 
 #define msgCodeZero 0
 #define kDatePickerTag 100
@@ -37,15 +39,15 @@
 @synthesize recipientName = _recipientName;             // Name
 @synthesize sendDate = _sendDate;                       // Recepient & Date to send message
 @synthesize textViewMsgContent = _textViewMsgContent;   // Message content
-@synthesize chatInput = _chatInput;
 @synthesize addMessage;
 @synthesize message;
+
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     [self.tabBarController.tabBar setHidden:YES];
+    
     // -- Initialize DATABASE -- //
     if (self.addMessage)
     {
@@ -62,6 +64,28 @@
     
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:cWR green:cGN blue:cBL alpha:cAL];
 
+    
+    if ([[UIDevice currentDevice]userInterfaceIdiom]==UIUserInterfaceIdiomPhone)
+    {
+        if ([[UIScreen mainScreen] bounds].size.height == 568.0f)
+        {
+            NSLog(@"Height = 568"); // iPhone 5 
+        }
+        else
+        {
+            NSLog(@"Height = 480"); // iPhone 4S 3.5"" Screen
+        }
+        
+    }
+
+
+    
+    [CommonStyle setContactFieldViewBackground:self.recipientView];
+    
+    
+    
+    
+    
     // Customize UITextfield programatically for Recepient 
     //CGRect textViewFrame = CGRectMake(30.0f, 10.0f, 250.0f, 30.0f);                   // CGRectMake(X, Y, W, H)
     CGRect textViewFrame = CGRectMake(33, 70, 240, 30);                                 // CGRectMake(X, Y, W, H)
@@ -83,9 +107,6 @@
     
     [self.view addSubview:_personRecipient];
     [_personRecipient becomeFirstResponder];                                          // Focus cursor in Recipient field
-    
-    //[_chatInput respondsToSelector:@selector(awakeFromNib:)]; // To launch message editor
-    //[_chatInput.textView becomeFirstResponder];
     
     // ********* Create UILable for "To" *********** //
     // ********************************************* //
@@ -298,9 +319,7 @@
 
 - (void)viewDidUnload
 {
-    //[self setTextView:nil];
     [self setChatInput:nil];
-    //[self setEmojiInputView:nil];
     [super viewDidUnload];
 }
 
@@ -344,13 +363,12 @@
 {
 	ABMultiValueRef phoneProperty = ABRecordCopyValue(person,property);
 	NSString *phone = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(phoneProperty,identifier);
-    //NSString *phone = (__bridge NSString *)ABMultiValueCopyValueAtIndex(phoneProperty, identifier);
-    
+
     _phoneTempVar = phone;
     NSString *name = (__bridge_transfer NSString *)ABRecordCopyCompositeName(person);
     
     CFRelease(phoneProperty);                                                   // Release phone properly
-    //if (![_personRecipient.text isEqualToString:nil])                           // Check if NOT empty
+    //if (![_personRecipient.text isEqualToString:nil])                         // Check if NOT empty
     if (property == kABPersonPhoneProperty)
     {
                 // Reference: http://www.shaunmccarthy.com/2012/04/finding-the-cursor-position-in-a-uitextfield/
@@ -373,15 +391,17 @@
         _personRecipient.text = [NSString stringWithFormat:@"%@ ", name];      // Passing Name- recipient field
         [self dismissViewControllerAnimated:YES completion:nil];                // Dismiss View Controller
             
-        NSLog(@"First: %@ %@ ", name, phoneNumberOnly );
+        NSLog(@"First: %@ %@ ", name, phoneNumberOnly);
     }
-    else
-    {
-        _personRecipient.text = [NSString stringWithFormat:@"%@, ", name];      // Passing Name- recipient field
-        [self dismissViewControllerAnimated:YES completion:nil];                // Dismiss View Controller
-        NSLog(@"Second: %@ %@ ", name, phone);
-    }
-    return name;
+    
+//    else
+//    {
+//        _personRecipient.text = [NSString stringWithFormat:@"%@, ", name];      // Passing Name- recipient field
+//        [self dismissViewControllerAnimated:YES completion:nil];                // Dismiss View Controller
+//        NSLog(@"Second: %@ %@ ", name, phone);
+//    }
+    return NO;
+    
 }
 
  
@@ -396,26 +416,6 @@
     _personRecipient.selectedRange = range;
     _personRecipient.scrollEnabled = YES;  // turn scrolling back on.
 }
-
-#pragma mark Date Picker
-/*
--(IBAction)getDate:(id)sender
-{
-    [_personRecipient resignFirstResponder];        // Hide keyboard when selecting date
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Select date" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Select", nil];
-    UIView *dateView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 200)];
-    dateView.backgroundColor = [UIColor clearColor];
-    
-    // Initialize UIPickerView
-    UIDatePicker *pickDate = [[UIDatePicker alloc]initWithFrame:CGRectMake(0, 0, 100, 50)];
-    [pickDate setMinuteInterval:1];
-    [pickDate setTag: kDatePickerTag];
-    
-    [dateView addSubview:pickDate];
-    [av setValue:dateView forKey:@"accessoryView"]; // body of view
-    [av show];                                      // to show the vie
-}
-*/
 
 // Method to respond to "Select" from UIAlertview
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -447,16 +447,8 @@
  - (BOOL)personRecipient:(UITextView *)personRecipient shouldChangeTextInRange:(NSRange)range replacementText:
     (NSString*)text 
 {
-    /*
-    if ([text isEqualToString:@"\n"])
-    {
-        [_chatInput becomeFirstResponder];
-    }
-    else if (text.length > 0)
-    {
-        //[self adjustTextInputHeightForText:[NSString stringWithFormat:@"%@%@", _textView.text, text] animated:YES];
-    } */
-    NSLog(@"textview in action");
+
+    //NSLog(@"textview in action");
     return YES;
 }
 
@@ -511,17 +503,28 @@
 
 - (void)sendButtonPressed:(id)sender
 {
-    
-    if ([_personRecipient.text isEqualToString:@""]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Empty recipient"
-                                                        message:@"Empty recipient not allowed"
+    if ([_personRecipient.text isEqualToString:@""])
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Recipient"
+                                                        message:@"Oh, you might forgot your recipient."
                                                        delegate:self
-                                              cancelButtonTitle:@"Okay"
+                                              cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
         [alert show];
         return;
     }
-    
+
+    // message filter if empty
+    if ([_chatInput.textView.text isEqualToString:@""]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message"
+                                                        message:@"Oh, you might forgot to type your message."
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
+
     NSString *msg = [NSString stringWithFormat:@"%@", _chatInput.textView.text ];
     NSManagedObjectContext *context = [self manageObjectContext];
     
@@ -553,7 +556,6 @@
         else
         {
             [myMO setValue:msg forKey:@"messageContent"];
-
         }
         
         [myMO setValue:[NSNumber numberWithInteger:[strippedNumber integerValue]] forKey:@"recipientNumber"];
@@ -567,7 +569,7 @@
         [myMO setValue:[delegate selectedDate] forKey:@"sendDate"];
         [myMO setValue:[NSDate date] forKey:@"messageDateCreated"];
         [myMO setValue:@0 forKey:@"messageStatusCode"];
-        [myMO setValue:@"lichard@yahoo.com" forKey:@"senderEmail"];
+        [myMO setValue:@"@%" forKey:@"senderEmail"];
         
         NSUUID  *UUID = [NSUUID UUID];
         NSString* stringUUID = [UUID UUIDString];
@@ -577,17 +579,14 @@
         NSLog(@"Recipient No: %@", [NSNumber numberWithInteger:[strippedNumber integerValue]]);
         NSLog(@"Name: %@", _personRecipient.text);
         NSLog(@"Msg content: %@", _textViewMsgContent.text);
-        NSLog(@"Chat textview: %@", _chatInput.textView.text);
+        NSLog(@"Chat textview: %@", self.chatInput.textView.text);
         NSLog(@"Time Zone: %@", timeZone);
     }
     
     NSError *error = nil;
     if (![context save:&error]) {
         NSLog(@"Unresolved error %@, %@", error, [error localizedDescription]);         // error userInfo
-        //abort();
     }
-    // ************************************** //
-    //[super doneAndDismiss];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -600,21 +599,6 @@
     [_chatInput fitText];
     
 }
-
-#pragma UITextView above UIKeyboard
-/*
- - (void)keyboardWillShow:(NSNotification *)notification
- {
- //http://www.randomsequence.com/articles/adding-a-toolbar-with-next-previous-above-uitextfield-keyboard-iphone/
- }
- */
-
-/*
-- (void) showEmojiInput:(id)sender {
- _chatInput.textView.inputView = _chatInput.textView.inputView == nil ? _emojiInputView : nil;
- [_chatInput.textView reloadInputViews];
- }
- */
 
 -(void)viewWillAppear:(BOOL)animated
 {

@@ -9,10 +9,6 @@
 #import "ControlViewController.h"
 #import "AppDelegate.h"
 
-#define cWR 24/255.0f
-#define cGN 177/255.0f
-#define cBL 16/255.0f
-#define cAL 1.0f
 
 
 @interface ControlViewController ()

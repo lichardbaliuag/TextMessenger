@@ -8,11 +8,12 @@
 
 #import "MessageContentViewController.h"
 #import "AddMessViewController.h"
+#import "AppDelegate.h"
 
 @interface MessageContentViewController ()
 
--(float)resizeToFit;
--(float)expectedHeight;
+//-(float)resizeToFit;
+//-(float)expectedHeight;
 
 @end
 
@@ -31,40 +32,33 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //[self contentDisplay];
-    //self.msgContentDetails.text = self.userMessages.messageContent;
-
-//    [self.contentLabel setNumberOfLines:0];
-//    [self.contentLabel setLineBreakMode:NSLineBreakByWordWrapping];
+    [self.tabBarController.tabBar setHidden:YES];
     
+    self.imgbackground.image = [UIImage imageNamed:@"OldPaper_small.png"];
+    
+    //[self.view setBackgroundColor:[UIColor clearColor]];
+    //self.messageDetail.backgroundColor = [UIColor clearColor];
     
     NSDateFormatter *dateFormatter;
     dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"dd/MM/yyyy hh:mm a"];// here set format which you want...
-    
     NSString *convertedString = [dateFormatter stringFromDate:self.userMessages.sendDate];
-    
-    //NSLog(@"messageguid %@", self.userMessages.messageGuid);
-    //CGSize maximumLabelSize = CGSizeMake(300, FLT_MAX);
-    //CGSize expectedLabelSize = [self.userMessages.messageContent sizeWithFont:self.contentLabel.font constrainedToSize:maximumLabelSize lineBreakMode:self.contentLabel.lineBreakMode];
-    //CGRect labelNewFrame = self.contentLabel.frame;
-    
-    //self.msgContentDetails.text = expectedLabelSize.height;
     self.dateToSend.text = convertedString;
     self.status.text = [NSString stringWithFormat:@"%@", self.userMessages.messageStatusCode];
     
-    //UILabel *customLabel = [UILabel alloc] initWithFrame:CGRectMake(<#CGFloat x#>, <#CGFloat y#>, <#CGFloat width#>, <#CGFloat height#>)
-    
-    self.msgContentDetails.text = self.userMessages.messageContent;
-
+    //self.msgContentDetails.text = self.userMessages.messageContent;
+    self.messageDetail.text = self.userMessages.messageContent;
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
+    [self.tabBarController.tabBar setHidden:YES];
+    
     UINavigationController *navCon  = (UINavigationController*) [self.navigationController.viewControllers objectAtIndex:1];
     navCon.navigationItem.title = self.userMessages.recipientName;
 }
 
+/*
 -(float)resizeToFit
 {
     float height = [self expectedHeight];
@@ -94,6 +88,7 @@
     return expectedLabelSize->height;
     
 }
+*/
 
 //- (void)contentDisplay
 //{
